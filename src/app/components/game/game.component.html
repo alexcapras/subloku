@@ -1,0 +1,22 @@
+<cdk-drop-list></cdk-drop-list>
+
+<div cdkDropList  >
+  <app-board
+    #board
+    [isFilled]="isFilled"
+    [isHovered]="isHovered"
+  ></app-board>
+</div>
+
+<div
+  cdkDropList
+>
+  <svg width="160" height="160" cdkDrag
+       (cdkDragMoved)="onMove()"
+       (cdkDragDropped)="onDrop()"
+  >
+    <rect
+      x="5" y="5" width="40" height="40"
+      style="fill:blue;" />
+  </svg>
+</div>
