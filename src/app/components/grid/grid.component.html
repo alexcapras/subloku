@@ -1,0 +1,28 @@
+<div class="grid">
+    <ng-container *ngFor="let rowIdx of rowIndices">
+        <ng-container
+            *ngTemplateOutlet="row; context: { rowIdx: rowIdx }"
+        ></ng-container>
+    </ng-container>
+</div>
+
+<ng-template #cell let-colIdx="colIdx" let-rowIdx="rowIdx">
+    <div class="grid__cell" [ngStyle]="cellStyle()">
+        <ng-container *ngIf="showIndices">
+            c={{ colIdx }}, r={{ rowIdx }}
+        </ng-container>
+    </div>
+</ng-template>
+
+<ng-template #row let-rowIdx="rowIdx">
+    <div class="grid__row" [ngStyle]="rowStyle()">
+        <ng-container *ngFor="let colIdx of colIndices">
+            <ng-container
+                *ngTemplateOutlet="
+                    cell;
+                    context: { colIdx: colIdx, rowIdx: rowIdx }
+                "
+            ></ng-container>
+        </ng-container>
+    </div>
+</ng-template>

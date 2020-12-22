@@ -9,6 +9,7 @@ import { GameComponent } from './components/game/game.component';
 import { ShapeSelectorComponent } from './components/shape-selector/shape-selector.component';
 import { ShapeComponent } from './components/shape/shape.component';
 import { GridMinorComponent } from './components/grid-minor/grid-minor.component';
+import { GridComponent } from './components/grid/grid.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { GridMinorComponent } from './components/grid-minor/grid-minor.component
     ShapeSelectorComponent,
     ShapeComponent,
     GridMinorComponent,
+    GridComponent,
   ],
   imports: [
     BrowserModule,

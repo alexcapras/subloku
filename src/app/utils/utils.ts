@@ -2,10 +2,21 @@ import { Point, Position } from '../models/models';
 import * as constants from './constants';
 
 export class Utils {
+    /**
+     * Create array from 0 to {@param size} - 1.
+     */
+    public static createLinearArray(size: number) {
+        return this.createArray<number>(size, 0).map((_, index) => index);
+    }
+
+    public static createArray<T>(size: number, defaultValue: T): T[] {
+        return Array(size).fill(defaultValue);
+    }
+
     public static createGrid<T>(size: number, defaultValue: T): T[][] {
-        return Array(size)
-            .fill(defaultValue)
-            .map(_ => Array(size).fill(defaultValue));
+        return this.createArray(size, defaultValue).map(_ =>
+            this.createArray(size, defaultValue)
+        );
     }
 
     public static calcRelativePosition(

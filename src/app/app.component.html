@@ -1,2 +1,8 @@
-<app-grid-minor></app-grid-minor>
-<app-game></app-game>
+<!--<app-grid-minor></app-grid-minor>-->
+<!--<app-game></app-game>-->
+
+<button (click)="incrRows(1)">More rows</button>
+<button (click)="incrRows(-1)">Less rows</button>
+<button (click)="incrCols(1)">More cols</button>
+<button (click)="incrCols(-1)">Less cols</button>
+<app-grid [showIndices]="true" cellSize="15vw" [columns]="cols" [rows]="rows"></app-grid>
