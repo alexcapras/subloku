@@ -14,8 +14,8 @@ import { Mappers } from '../../utils/mappers';
 
 @Component({
     selector: 'app-board',
-    templateUrl: './grid.component.html',
-    styleUrls: ['./grid.component.scss'],
+    templateUrl: './board.component.html',
+    styleUrls: ['./board.component.scss'],
     animations: [
         trigger('emptyFill', [
             transition('filled => empty', [
@@ -43,7 +43,7 @@ import { Mappers } from '../../utils/mappers';
         ]),
     ],
 })
-export class GridComponent implements OnInit {
+export class BoardComponent implements OnInit {
     TOTAL_SIZE = constants.TOTAL_SIZE;
 
     squares: Square[];

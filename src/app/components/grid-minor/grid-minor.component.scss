@@ -1,0 +1,34 @@
+$minor-cell-size: 4vw;
+$major-cell-size: calc(3 * 4vw);
+$major-row-width: calc(3 * 3 * 4vw);
+
+.minor-cell {
+    border: 0.1px solid gray;
+    height: $minor-cell-size;
+    width: $minor-cell-size;
+}
+
+.minor-row {
+    display: grid;
+    grid-template-columns: $minor-cell-size $minor-cell-size $minor-cell-size;
+}
+
+.major-cell {
+    border: 0.1px solid darkgray;
+    width: $major-cell-size;
+}
+
+.major-row {
+    display: grid;
+    //width: $major-row-width;
+    grid-template-columns: $major-cell-size $major-cell-size $major-cell-size;
+}
+
+.major-grid {
+    width: 100%;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: auto $major-row-width auto;
+}

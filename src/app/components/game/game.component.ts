@@ -5,7 +5,7 @@ import {
     OnInit,
     ViewChild,
 } from '@angular/core';
-import { GridComponent } from '../board/grid.component';
+import { BoardComponent } from '../board/board.component';
 import { BehaviorSubject } from 'rxjs';
 import { Point, Position } from '../../models/models';
 import { Utils } from '../../utils/utils';
@@ -18,7 +18,7 @@ import { Game } from '../../models/game';
 })
 export class GameComponent implements OnInit {
     @ViewChild('board', { static: false })
-    boardElement: ElementRef<GridComponent>;
+    boardElement: ElementRef<BoardComponent>;
 
     mousePositionSubject: BehaviorSubject<Position> = new BehaviorSubject({
         x: 0,
