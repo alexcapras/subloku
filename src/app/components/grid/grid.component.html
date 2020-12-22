@@ -7,7 +7,7 @@
 </div>
 
 <ng-template #cell let-colIdx="colIdx" let-rowIdx="rowIdx">
-    <div class="grid__cell" [ngStyle]="cellStyle()">
+    <div [ngStyle]="cellStyle(colIdx, rowIdx)">
         <ng-container *ngIf="showIndices">
             c={{ colIdx }}, r={{ rowIdx }}
         </ng-container>
@@ -15,7 +15,7 @@
 </ng-template>
 
 <ng-template #row let-rowIdx="rowIdx">
-    <div class="grid__row" [ngStyle]="rowStyle()">
+    <div [ngStyle]="rowStyle()">
         <ng-container *ngFor="let colIdx of colIndices">
             <ng-container
                 *ngTemplateOutlet="

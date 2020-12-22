@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Utils } from '../../utils/utils';
 
 @Component({
@@ -6,16 +6,28 @@ import { Utils } from '../../utils/utils';
     templateUrl: './grid.component.html',
     styleUrls: ['./grid.component.scss'],
 })
-export class GridComponent implements OnInit {
+export class GridComponent {
     // tslint:disable:variable-name
     private _rowIndices: number[];
     private _colIndices: number[];
 
     @Input()
+    showAllBorders = false;
+
+    @Input()
     cellSize = '5vw';
 
     @Input()
+    cellBorderWidth = '0.2vw';
+
+    @Input()
+    cellMargin = '0.1vw';
+
+    @Input()
     showIndices: boolean;
+
+    @Input()
+    filled: boolean[][];
 
     @Input()
     set rows(rows: number) {
@@ -35,22 +47,42 @@ export class GridComponent implements OnInit {
         return this._colIndices;
     }
 
-    cellStyle() {
+    cellStyle(colIdx: number, rowIdx: number) {
+        const cellSizeAdjusted = `calc(${this.cellSize} - 2 * (${this.cellBorderWidth} + ${this.cellMargin}))`;
+        const borderColor =
+            this.showAllBorders || this.isFilled(colIdx, rowIdx)
+                ? 'black'
+                : 'transparent';
         return {
-            width: this.cellSize,
-            height: this.cellSize,
+            width: cellSizeAdjusted,
+            height: cellSizeAdjusted,
+            background: this.isFilled(colIdx, rowIdx) ? 'blue' : null,
+            margin: this.cellMargin,
+            border: `${this.cellBorderWidth} solid ${borderColor}`,
         };
     }
 
     rowStyle() {
         return {
+            display: 'grid',
             'grid-template-columns': this._colIndices
                 .map(_ => this.cellSize)
                 .join(' '),
         };
     }
 
-    constructor() {}
+    private isFilled(colIdx: number, rowIdx: number) {
+        if (
+            !this.filled ||
+            !this.filled.length ||
+            colIdx < 0 ||
+            colIdx >= this.filled.length ||
+            rowIdx < 0 ||
+            rowIdx >= this.filled[colIdx].length
+        ) {
+            return false;
+        }
 
-    ngOnInit() {}
+        return this.filled[colIdx][rowIdx];
+    }
 }

@@ -1,8 +1,20 @@
-<!--<app-grid-minor></app-grid-minor>-->
-<!--<app-game></app-game>-->
+<app-grid-minor></app-grid-minor>
+<app-game></app-game>
+<section class="shape-container">
+    <div *ngFor="let shape of shapes" class="shape">
+        <app-shape [shape]="shape"> </app-shape>
+    </div>
+</section>
 
 <button (click)="incrRows(1)">More rows</button>
 <button (click)="incrRows(-1)">Less rows</button>
 <button (click)="incrCols(1)">More cols</button>
 <button (click)="incrCols(-1)">Less cols</button>
-<app-grid [showIndices]="true" cellSize="15vw" [columns]="cols" [rows]="rows"></app-grid>
+
+<app-grid
+    [showIndices]="true"
+    [showAllBorders]="true"
+    cellSize="15vw"
+    [columns]="cols"
+    [rows]="rows"
+></app-grid>

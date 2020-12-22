@@ -8,8 +8,8 @@ export class Game {
     private readonly _isHovered: boolean[][];
 
     constructor() {
-        this._isFilled = Utils.createGrid<boolean>(9, false);
-        this._isHovered = Utils.createGrid<boolean>(9, false);
+        this._isFilled = Utils.createGrid<boolean>(9, 9, false);
+        this._isHovered = Utils.createGrid<boolean>(9, 9, false);
     }
 
     public isFilled(xIndex: number, yIndex: number) {
@@ -22,20 +22,20 @@ export class Game {
 
     fill(point: Point) {
         if (Utils.isPointOutOfBounds(point, this._isFilled)) {
-            this._isFilled[point.xIndex][point.yIndex] = true;
+            this._isFilled[point.colIdx][point.rowIdx] = true;
         } else {
             console.log(`Fill point: ${JSON.stringify(point)} out of bounds`);
             return;
         }
 
         const bigSquareStartPoint: Point = {
-            xIndex: Math.floor(point.xIndex / 3.0) * 3,
-            yIndex: Math.floor(point.yIndex / 3.0) * 3,
+            colIdx: Math.floor(point.colIdx / 3.0) * 3,
+            rowIdx: Math.floor(point.rowIdx / 3.0) * 3,
         };
 
         const clearBigSquare = this.isBigSquareFilled(bigSquareStartPoint);
-        const clearVerticalLine = this.isVerticalLineFilled(point.xIndex);
-        const clearHorizontalLine = this.isHorizontalLineFilled(point.yIndex);
+        const clearVerticalLine = this.isVerticalLineFilled(point.colIdx);
+        const clearHorizontalLine = this.isHorizontalLineFilled(point.rowIdx);
 
         this.resetIsHovered();
 
@@ -45,11 +45,11 @@ export class Game {
             }
 
             if (clearVerticalLine) {
-                this.clearVerticalLine(point.xIndex);
+                this.clearVerticalLine(point.colIdx);
             }
 
             if (clearHorizontalLine) {
-                this.clearHorizontalLine(point.yIndex);
+                this.clearHorizontalLine(point.rowIdx);
             }
         }, 200);
     }
@@ -58,7 +58,7 @@ export class Game {
         this.resetIsHovered();
 
         if (Utils.isPointOutOfBounds(point, this._isHovered)) {
-            this._isHovered[point.xIndex][point.yIndex] = true;
+            this._isHovered[point.colIdx][point.rowIdx] = true;
         } else {
             console.log(`Hover point: ${JSON.stringify(point)} out of bounds`);
         }
@@ -73,8 +73,8 @@ export class Game {
     }
 
     private clearBigSquare(startPoint: Point) {
-        for (let x = startPoint.xIndex; x < startPoint.xIndex + 3; x++) {
-            for (let y = startPoint.yIndex; y < startPoint.yIndex + 3; y++) {
+        for (let x = startPoint.colIdx; x < startPoint.colIdx + 3; x++) {
+            for (let y = startPoint.rowIdx; y < startPoint.rowIdx + 3; y++) {
                 this._isFilled[x][y] = false;
             }
         }
@@ -120,8 +120,8 @@ export class Game {
     private isBigSquareFilled(startPoint: Point) {
         let isBigSquareFilled = true;
 
-        for (let x = startPoint.xIndex; x < startPoint.xIndex + 3; x++) {
-            for (let y = startPoint.yIndex; y < startPoint.yIndex + 3; y++) {
+        for (let x = startPoint.colIdx; x < startPoint.colIdx + 3; x++) {
+            for (let y = startPoint.rowIdx; y < startPoint.rowIdx + 3; y++) {
                 isBigSquareFilled = isBigSquareFilled && this._isFilled[x][y];
             }
         }

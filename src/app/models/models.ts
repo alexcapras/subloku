@@ -20,10 +20,10 @@ export interface Line {
 }
 
 export interface Point {
-  xIndex: number;
-  yIndex: number;
+  colIdx: number;
+  rowIdx: number;
 }
 
 export interface Shape {
-  coordinates: Point[];
+  points: Point[];
 }

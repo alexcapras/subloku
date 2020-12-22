@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Shape } from './models/models';
+import { shapes } from './utils/shapes';
 
 @Component({
     selector: 'app-root',
@@ -8,6 +10,7 @@ import { Component } from '@angular/core';
 export class AppComponent {
     rows = 3;
     cols = 3;
+    shapes: Shape[] = shapes;
 
     incrRows(incr) {
         this.rows = this.incrSafe(this.rows, incr);

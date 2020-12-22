@@ -13,9 +13,9 @@ export class Utils {
         return Array(size).fill(defaultValue);
     }
 
-    public static createGrid<T>(size: number, defaultValue: T): T[][] {
-        return this.createArray(size, defaultValue).map(_ =>
-            this.createArray(size, defaultValue)
+    public static createGrid<T>(cols: number, rows: number, defaultValue: T): T[][] {
+        return this.createArray(cols, defaultValue).map(_ =>
+            this.createArray(rows, defaultValue)
         );
     }
 
@@ -34,17 +34,17 @@ export class Utils {
         const relativeY = position.y - constants.OFFSET;
 
         return {
-            xIndex: Math.floor(relativeX / constants.SQUARE_SIZE),
-            yIndex: Math.floor(relativeY / constants.SQUARE_SIZE),
+            colIdx: Math.floor(relativeX / constants.SQUARE_SIZE),
+            rowIdx: Math.floor(relativeY / constants.SQUARE_SIZE),
         };
     }
 
     public static isPointOutOfBounds(point: Point, array: any[][]) {
         return (
-            point.xIndex < array.length &&
-            point.xIndex >= 0 &&
-            point.yIndex < array[point.xIndex].length &&
-            point.yIndex >= 0
+            point.colIdx < array.length &&
+            point.colIdx >= 0 &&
+            point.rowIdx < array[point.colIdx].length &&
+            point.rowIdx >= 0
         );
     }
 }

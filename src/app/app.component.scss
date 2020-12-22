@@ -1,4 +1,13 @@
 app-board {
-  display: flex;
-  justify-content: center;
+    display: flex;
+    justify-content: center;
+}
+
+.shape-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.shape {
+    padding: 1rem;
 }
