@@ -1,3 +1,25 @@
+<div class="new-wrapper">
+  <app-grid
+    id="major-grid"
+    cellSize="24vmin"
+    cellBorderWidth="0.1rem"
+    cellMargin="0rem"
+    [columns]="3"
+    [rows]="3"
+    [showAllBorders]="true"
+    [borderColour]="'black'"
+  ></app-grid>
+  <app-grid
+    id="minor-grid"
+    cellSize="8vmin"
+    cellBorderWidth="0.1rem"
+    cellMargin="0rem"
+    [columns]="9"
+    [rows]="9"
+    [showAllBorders]="true"
+    [borderColour]="'lightgrey'"
+  ></app-grid>
+</div>
 <app-game></app-game>
 <section class="shape-container">
     <div *ngFor="let shape of shapes" class="shape">
@@ -11,9 +33,13 @@
 <button (click)="incrCols(-1)">Less cols</button>
 
 <app-grid
-    [showIndices]="true"
-    [showAllBorders]="true"
-    cellSize="15vw"
+    cellSize="50px"
+    cellBorderWidth="0.5px"
+    cellMargin="0px"
     [columns]="cols"
     [rows]="rows"
+    [showAllBorders]="true"
+    [borderColour]="'red'"
 ></app-grid>
+
+

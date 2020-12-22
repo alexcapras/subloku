@@ -12,7 +12,7 @@ export class GridComponent {
     private _colIndices: number[];
 
     @Input()
-    showAllBorders = false;
+    showAllBorders = false; // if true, all borders are coloured, otherwise only the borders for filled cells are shown
 
     @Input()
     cellSize = '5vw';
@@ -23,11 +23,21 @@ export class GridComponent {
     @Input()
     cellMargin = '0.1vw';
 
+    // debug utility to display col and row index in the div component
     @Input()
     showIndices: boolean;
 
     @Input()
     filled: boolean[][];
+
+    @Input()
+    emptyColour = 'transparent';
+
+    @Input()
+    filledColour = 'green';
+
+    @Input()
+    borderColour = 'grey';
 
     @Input()
     set rows(rows: number) {
@@ -51,12 +61,14 @@ export class GridComponent {
         const cellSizeAdjusted = `calc(${this.cellSize} - 2 * (${this.cellBorderWidth} + ${this.cellMargin}))`;
         const borderColor =
             this.showAllBorders || this.isFilled(colIdx, rowIdx)
-                ? 'black'
+                ? this.borderColour
                 : 'transparent';
         return {
             width: cellSizeAdjusted,
             height: cellSizeAdjusted,
-            background: this.isFilled(colIdx, rowIdx) ? 'blue' : null,
+            background: this.isFilled(colIdx, rowIdx)
+                ? this.filledColour
+                : this.emptyColour,
             margin: this.cellMargin,
             border: `${this.cellBorderWidth} solid ${borderColor}`,
         };
