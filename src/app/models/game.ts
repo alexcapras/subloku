@@ -23,6 +23,9 @@ export class Game {
     get filled() {
         return this._isFilled;
     }
+    get hovered() {
+        return this._isHovered;
+    }
 
     fill(point: Point) {
         if (Utils.isPointOutOfBounds(point, this._isFilled)) {

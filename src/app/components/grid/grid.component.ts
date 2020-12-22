@@ -38,10 +38,16 @@ export class GridComponent {
     filled: boolean[][];
 
     @Input()
+    hovered: boolean[][];
+
+    @Input()
     emptyColour = 'transparent';
 
     @Input()
     filledColour = 'green';
+
+    @Input()
+    hoverColour = 'lightgrey';
 
     @Input()
     borderColour = 'grey';
@@ -75,6 +81,8 @@ export class GridComponent {
             height: cellSizeAdjusted,
             background: this.isFilled(colIdx, rowIdx)
                 ? this.filledColour
+                : this.isHovered(colIdx, rowIdx)
+                ? this.hoverColour
                 : this.emptyColour,
             margin: this.cellMargin,
             border: `${this.cellBorderWidth} solid ${borderColor}`,
@@ -95,17 +103,10 @@ export class GridComponent {
     }
 
     private isFilled(colIdx: number, rowIdx: number) {
-        if (
-            !this.filled ||
-            !this.filled.length ||
-            colIdx < 0 ||
-            colIdx >= this.filled.length ||
-            rowIdx < 0 ||
-            rowIdx >= this.filled[colIdx].length
-        ) {
-            return false;
-        }
+        return Utils.getOrDefault<boolean>(this.filled, colIdx, rowIdx, false);
+    }
 
-        return this.filled[colIdx][rowIdx];
+    private isHovered(colIdx: number, rowIdx: number) {
+        return Utils.getOrDefault<boolean>(this.hovered, colIdx, rowIdx, false);
     }
 }

@@ -58,7 +58,7 @@ export class BoardComponent implements OnInit {
         ];
     }
 
-    getSquareStyle(xIndex: number, yIndex: number) {
+    getSquareStyle({ xIndex, yIndex }: Square) {
         const xx = (xIndex + 0.5) * constants.SQUARE_SIZE + constants.OFFSET;
         const yy = (yIndex + 0.5) * constants.SQUARE_SIZE + constants.OFFSET;
 
@@ -71,10 +71,17 @@ export class BoardComponent implements OnInit {
         return {
             'transform-origin': `${xx}px ${yy}px`, // <-- this is super important!
             fill: color,
+            stroke: 'black',
+            'stroke-width': this.game.isFilled(xIndex, yIndex) ? 1.5 : 0,
+            'fill-opacity':
+                this.game.isFilled(xIndex, yIndex) ||
+                this.game.isHovered(xIndex, yIndex)
+                    ? 1
+                    : 0,
         };
     }
 
-    getSquareState(xIndex: number, yIndex: number) {
+    getSquareState({ xIndex, yIndex }: Square) {
         return this.game.isFilled(xIndex, yIndex) ? 'filled' : 'empty';
     }
 }

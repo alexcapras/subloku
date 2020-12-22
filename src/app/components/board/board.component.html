@@ -1,32 +1,29 @@
-<svg
-  #board
-  [attr.width]="TOTAL_SIZE" [attr.height]="TOTAL_SIZE">
+<svg #board [attr.width]="TOTAL_SIZE" [attr.height]="TOTAL_SIZE">
+    <line
+        class="line-primary"
+        *ngFor="let line of primaryLines"
+        [attr.x1]="line.x1"
+        [attr.y1]="line.y1"
+        [attr.x2]="line.x2"
+        [attr.y2]="line.y2"
+    ></line>
 
-  <rect
-    *ngFor="let square of squares"
-    [ngStyle]="getSquareStyle(square.xIndex, square.yIndex)"
-    [@emptyFill]="getSquareState(square.xIndex, square.yIndex)"
-    [attr.x]="square.xPos"
-    [attr.y]="square.yPos"
-    [attr.width]="square.width"
-    [attr.height]="square.height"
-  ></rect>
+    <line
+        class="line-secondary"
+        *ngFor="let line of secondaryLines"
+        [attr.x1]="line.x1"
+        [attr.y1]="line.y1"
+        [attr.x2]="line.x2"
+        [attr.y2]="line.y2"
+    ></line>
 
-  <line
-    class="line-primary"
-    *ngFor="let line of primaryLines"
-    [attr.x1]="line.x1"
-    [attr.y1]="line.y1"
-    [attr.x2]="line.x2"
-    [attr.y2]="line.y2"
-  ></line>
-
-  <line
-    class="line-secondary"
-    *ngFor="let line of secondaryLines"
-    [attr.x1]="line.x1"
-    [attr.y1]="line.y1"
-    [attr.x2]="line.x2"
-    [attr.y2]="line.y2"
-  ></line>
+    <rect
+        *ngFor="let square of squares"
+        [ngStyle]="getSquareStyle(square)"
+        [@emptyFill]="getSquareState(square)"
+        [attr.x]="square.xPos"
+        [attr.y]="square.yPos"
+        [attr.width]="square.width"
+        [attr.height]="square.height"
+    ></rect>
 </svg>

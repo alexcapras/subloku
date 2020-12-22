@@ -13,7 +13,11 @@ export class Utils {
         return Array(size).fill(defaultValue);
     }
 
-    public static createGrid<T>(cols: number, rows: number, defaultValue: T): T[][] {
+    public static createGrid<T>(
+        cols: number,
+        rows: number,
+        defaultValue: T
+    ): T[][] {
         return this.createArray(cols, defaultValue).map(_ =>
             this.createArray(rows, defaultValue)
         );
@@ -46,5 +50,25 @@ export class Utils {
             point.rowIdx < array[point.colIdx].length &&
             point.rowIdx >= 0
         );
+    }
+
+    public static getOrDefault<T>(
+        grid: T[][],
+        colIdx: number,
+        rowIdx: number,
+        defaultVal: T
+    ): T {
+        if (
+            !grid ||
+            !grid.length ||
+            colIdx < 0 ||
+            colIdx >= grid.length ||
+            rowIdx < 0 ||
+            rowIdx >= grid[colIdx].length
+        ) {
+            return defaultVal;
+        }
+
+        return grid[colIdx][rowIdx];
     }
 }
