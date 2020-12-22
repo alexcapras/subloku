@@ -10,11 +10,12 @@ import {
 } from '@angular/animations';
 import { Line, Square } from '../../models/models';
 import { Game } from '../../models/game';
+import { Mappers } from '../../utils/mappers';
 
 @Component({
     selector: 'app-board',
-    templateUrl: './board.component.html',
-    styleUrls: ['./board.component.scss'],
+    templateUrl: './grid.component.html',
+    styleUrls: ['./grid.component.scss'],
     animations: [
         trigger('emptyFill', [
             transition('filled => empty', [
@@ -42,7 +43,7 @@ import { Game } from '../../models/game';
         ]),
     ],
 })
-export class BoardComponent implements OnInit {
+export class GridComponent implements OnInit {
     TOTAL_SIZE = constants.TOTAL_SIZE;
 
     squares: Square[];
@@ -63,7 +64,7 @@ export class BoardComponent implements OnInit {
 
         // @ts-ignore
         this.squares = xIndices.flatMap(xIndex =>
-            yIndices.map(yIndex => this.mapPointToSquare(xIndex, yIndex))
+            yIndices.map(yIndex => Mappers.mapPointToSquare(xIndex, yIndex))
         );
 
         const lineIndices = Array(10)
@@ -73,38 +74,15 @@ export class BoardComponent implements OnInit {
         const secondaryLineIndices = lineIndices.filter(x => !!(x % 3));
 
         this.primaryLines = [
-            ...primaryLineIndices.map(this.mapXIndexToVerticalLine),
-            ...primaryLineIndices.map(this.mapYIndexToHorizontalLine),
+            ...primaryLineIndices.map(Mappers.mapXIndexToVerticalLine),
+            ...primaryLineIndices.map(Mappers.mapYIndexToHorizontalLine),
         ];
 
         this.secondaryLines = [
-            ...secondaryLineIndices.map(this.mapXIndexToVerticalLine),
-            ...secondaryLineIndices.map(this.mapYIndexToHorizontalLine),
+            ...secondaryLineIndices.map(Mappers.mapXIndexToVerticalLine),
+            ...secondaryLineIndices.map(Mappers.mapYIndexToHorizontalLine),
         ];
     }
-
-    private mapPointToSquare = (xIndex: number, yIndex: number): Square => ({
-        xIndex,
-        yIndex,
-        width: constants.SQUARE_SIZE,
-        height: constants.SQUARE_SIZE,
-        xPos: xIndex * constants.SQUARE_SIZE + constants.OFFSET,
-        yPos: yIndex * constants.SQUARE_SIZE + constants.OFFSET,
-    })
-
-    private mapYIndexToHorizontalLine = (yIndex: number): Line => ({
-        x1: constants.OFFSET,
-        y1: yIndex * constants.SQUARE_SIZE + constants.OFFSET,
-        x2: constants.TOTAL_SIZE - constants.OFFSET,
-        y2: yIndex * constants.SQUARE_SIZE + constants.OFFSET,
-    })
-
-    private mapXIndexToVerticalLine = (xIndex: number): Line => ({
-        x1: xIndex * constants.SQUARE_SIZE + constants.OFFSET,
-        y1: constants.OFFSET,
-        x2: xIndex * constants.SQUARE_SIZE + constants.OFFSET,
-        y2: constants.TOTAL_SIZE - constants.OFFSET,
-    })
 
     getSquareStyle(xIndex: number, yIndex: number) {
         const xx = (xIndex + 0.5) * constants.SQUARE_SIZE + constants.OFFSET;
