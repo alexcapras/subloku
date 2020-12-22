@@ -1,4 +1,4 @@
-export interface Pos {
+export interface Position {
   x: number;
   y: number;
 }
@@ -17,4 +17,13 @@ export interface Line {
   y1: number;
   x2: number;
   y2: number;
+}
+
+export interface Point {
+  xIndex: number;
+  yIndex: number;
+}
+
+export interface Shape {
+  coordinates: Point[];
 }

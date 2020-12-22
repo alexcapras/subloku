@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { GameComponent } from './components/game/game.component';
 import { ShapeSelectorComponent } from './components/shape-selector/shape-selector.component';
+import { ShapeComponent } from './components/shape/shape.component';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { ShapeSelectorComponent } from './components/shape-selector/shape-select
     BoardComponent,
     GameComponent,
     ShapeSelectorComponent,
+    ShapeComponent,
   ],
   imports: [
     BrowserModule,
