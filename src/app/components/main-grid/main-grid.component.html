@@ -1,0 +1,23 @@
+<div class="grid-wrapper">
+    <app-grid
+        id="major-grid"
+        cellSize="24vmin"
+        cellBorderWidth="0.1rem"
+        cellMargin="0rem"
+        [columns]="3"
+        [rows]="3"
+        [showAllBorders]="true"
+        [borderColour]="'black'"
+    ></app-grid>
+    <app-grid
+        id="minor-grid"
+        cellSize="8vmin"
+        cellBorderWidth="0.1rem"
+        cellMargin="0rem"
+        [filled]="game?.filled"
+        [columns]="9"
+        [rows]="9"
+        [showAllBorders]="true"
+        [borderColour]="'lightgrey'"
+    ></app-grid>
+</div>

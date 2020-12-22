@@ -1,10 +1,17 @@
 import { Component, Input } from '@angular/core';
 import { Utils } from '../../utils/utils';
+import { transition, trigger, useAnimation } from '@angular/animations';
+import { emptyFillAnimation } from '../../animations/empty-fill.animation';
 
 @Component({
     selector: 'app-grid',
     templateUrl: './grid.component.html',
     styleUrls: ['./grid.component.scss'],
+    animations: [
+        trigger('emptyFill', [
+            transition('filled => empty', [useAnimation(emptyFillAnimation)]),
+        ]),
+    ],
 })
 export class GridComponent {
     // tslint:disable:variable-name
@@ -81,6 +88,10 @@ export class GridComponent {
                 .map(_ => this.cellSize)
                 .join(' '),
         };
+    }
+
+    getCellState(colIdx: number, rowIdx: number) {
+        return this.isFilled(colIdx, rowIdx) ? 'filled' : 'empty';
     }
 
     private isFilled(colIdx: number, rowIdx: number) {

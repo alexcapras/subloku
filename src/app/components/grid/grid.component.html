@@ -7,7 +7,7 @@
 </div>
 
 <ng-template #cell let-colIdx="colIdx" let-rowIdx="rowIdx">
-    <div [ngStyle]="cellStyle(colIdx, rowIdx)">
+    <div [ngStyle]="cellStyle(colIdx, rowIdx)" [@emptyFill]="getCellState(colIdx, rowIdx)">
         <ng-container *ngIf="showIndices">
             c={{ colIdx }}, r={{ rowIdx }}
         </ng-container>

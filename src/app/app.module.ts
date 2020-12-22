@@ -9,6 +9,7 @@ import { GameComponent } from './components/game/game.component';
 import { ShapeSelectorComponent } from './components/shape-selector/shape-selector.component';
 import { ShapeComponent } from './components/shape/shape.component';
 import { GridComponent } from './components/grid/grid.component';
+import { MainGridComponent } from './components/main-grid/main-grid.component';
 
 @NgModule({
     declarations: [
@@ -18,6 +19,7 @@ import { GridComponent } from './components/grid/grid.component';
         ShapeSelectorComponent,
         ShapeComponent,
         GridComponent,
+        MainGridComponent,
     ],
     imports: [BrowserModule, BrowserAnimationsModule, DragDropModule],
     providers: [],

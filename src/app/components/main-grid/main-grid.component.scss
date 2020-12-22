@@ -1,0 +1,13 @@
+.grid-wrapper {
+  height: calc(72vmin + 6rem);
+}
+
+#minor-grid, #major-grid {
+  position: absolute;
+  left: 3rem;
+  top: 3rem;
+}
+
+#major-grid {
+  z-index: 2;
+}

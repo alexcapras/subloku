@@ -1,16 +1,11 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import * as constants from '../../utils/constants';
 
-import {
-    trigger,
-    style,
-    animate,
-    transition,
-    keyframes,
-} from '@angular/animations';
+import { trigger, transition, useAnimation } from '@angular/animations';
 import { Line, Square } from '../../models/models';
 import { Game } from '../../models/game';
 import { Mappers } from '../../utils/mappers';
+import { emptyFillAnimation } from '../../animations/empty-fill.animation';
 
 @Component({
     selector: 'app-board',
@@ -18,28 +13,7 @@ import { Mappers } from '../../utils/mappers';
     styleUrls: ['./board.component.scss'],
     animations: [
         trigger('emptyFill', [
-            transition('filled => empty', [
-                animate(
-                    '0.3s',
-                    keyframes([
-                        style({
-                            fill: 'black',
-                            transform: 'rotate(0deg) scale(1.0)',
-                            offset: 0,
-                        }),
-                        style({
-                            fill: 'red',
-                            transform: 'rotate(90deg) scale(0.5)',
-                            offset: 0.5,
-                        }),
-                        style({
-                            fill: 'green',
-                            transform: 'rotate(180deg) scale(0)',
-                            offset: 1.0,
-                        }),
-                    ])
-                ),
-            ]),
+            transition('filled => empty', [useAnimation(emptyFillAnimation)]),
         ]),
     ],
 })

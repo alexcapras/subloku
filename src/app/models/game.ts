@@ -20,6 +20,10 @@ export class Game {
         return this._isHovered[xIndex][yIndex];
     }
 
+    get filled() {
+        return this._isFilled;
+    }
+
     fill(point: Point) {
         if (Utils.isPointOutOfBounds(point, this._isFilled)) {
             this._isFilled[point.colIdx][point.rowIdx] = true;
