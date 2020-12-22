@@ -8,25 +8,19 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { GameComponent } from './components/game/game.component';
 import { ShapeSelectorComponent } from './components/shape-selector/shape-selector.component';
 import { ShapeComponent } from './components/shape/shape.component';
-import { GridMinorComponent } from './components/grid-minor/grid-minor.component';
 import { GridComponent } from './components/grid/grid.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    BoardComponent,
-    GameComponent,
-    ShapeSelectorComponent,
-    ShapeComponent,
-    GridMinorComponent,
-    GridComponent,
-  ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    DragDropModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        BoardComponent,
+        GameComponent,
+        ShapeSelectorComponent,
+        ShapeComponent,
+        GridComponent,
+    ],
+    imports: [BrowserModule, BrowserAnimationsModule, DragDropModule],
+    providers: [],
+    bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
