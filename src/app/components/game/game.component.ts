@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { BoardComponent } from '../board/board.component';
 import { BehaviorSubject } from 'rxjs';
-import { Point, Position } from '../../models/models';
+import { Position } from '../../models/models';
 import { Utils } from '../../utils/utils';
 import { Game } from '../../models/game';
 

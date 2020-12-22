@@ -6,21 +6,14 @@ export const shapes: Shape[] = [
         points: [{ colIdx: 0, rowIdx: 0 }],
     },
     {
-        // Small (2-cell) vertical line
+        // Small (2-cell) line
         points: [
             { colIdx: 0, rowIdx: 0 },
             { colIdx: 0, rowIdx: 1 },
         ],
     },
     {
-        // Small (2-cell) horizontal line
-        points: [
-            { colIdx: 0, rowIdx: 0 },
-            { colIdx: 1, rowIdx: 0 },
-        ],
-    },
-    {
-        // Medium (3-cell) vertical line
+        // Medium (3-cell) line
         points: [
             { colIdx: 0, rowIdx: 0 },
             { colIdx: 0, rowIdx: 1 },
@@ -28,15 +21,7 @@ export const shapes: Shape[] = [
         ],
     },
     {
-        // Medium (3-cell) horizontal line
-        points: [
-            { colIdx: 0, rowIdx: 0 },
-            { colIdx: 1, rowIdx: 0 },
-            { colIdx: 2, rowIdx: 0 },
-        ],
-    },
-    {
-        // Big (4-cell) vertical line
+        // Big (4-cell) line
         points: [
             { colIdx: 0, rowIdx: 0 },
             { colIdx: 0, rowIdx: 1 },
@@ -45,12 +30,13 @@ export const shapes: Shape[] = [
         ],
     },
     {
-        // Big (3-cell) horizontal line
+        // Huge (5-cell) line
         points: [
             { colIdx: 0, rowIdx: 0 },
-            { colIdx: 1, rowIdx: 0 },
-            { colIdx: 2, rowIdx: 0 },
-            { colIdx: 3, rowIdx: 0 },
+            { colIdx: 0, rowIdx: 1 },
+            { colIdx: 0, rowIdx: 2 },
+            { colIdx: 0, rowIdx: 3 },
+            { colIdx: 0, rowIdx: 4 },
         ],
     },
     {
@@ -71,11 +57,12 @@ export const shapes: Shape[] = [
         ],
     },
     {
-        // Small L (backwards)
+        // Medium L
         points: [
-            { colIdx: 1, rowIdx: 0 },
-            { colIdx: 1, rowIdx: 1 },
+            { colIdx: 0, rowIdx: 0 },
             { colIdx: 0, rowIdx: 1 },
+            { colIdx: 0, rowIdx: 2 },
+            { colIdx: 1, rowIdx: 2 },
         ],
     },
     {
@@ -86,16 +73,6 @@ export const shapes: Shape[] = [
             { colIdx: 0, rowIdx: 2 },
             { colIdx: 1, rowIdx: 2 },
             { colIdx: 2, rowIdx: 2 },
-        ],
-    },
-    {
-        // Big L (backwards)
-        points: [
-            { colIdx: 2, rowIdx: 0 },
-            { colIdx: 2, rowIdx: 1 },
-            { colIdx: 2, rowIdx: 2 },
-            { colIdx: 1, rowIdx: 2 },
-            { colIdx: 0, rowIdx: 2 },
         ],
     },
     {

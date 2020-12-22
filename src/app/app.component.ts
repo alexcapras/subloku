@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Shape } from './models/models';
 import { shapes } from './utils/shapes';
+import { Transformers } from './utils/transformations';
 
 @Component({
     selector: 'app-root',
@@ -11,6 +12,9 @@ export class AppComponent {
     rows = 3;
     cols = 3;
     shapes: Shape[] = shapes;
+    shapes1: Shape[] = shapes.map(Transformers.rotate90n(1));
+    shapes2: Shape[] = shapes.map(Transformers.rotate90n(2));
+    shapes3: Shape[] = shapes.map(Transformers.rotate90n(3));
 
     incrRows(incr) {
         this.rows = this.incrSafe(this.rows, incr);

@@ -1,7 +1,22 @@
 <app-game></app-game>
 <section class="shape-container">
     <div *ngFor="let shape of shapes" class="shape">
-        <app-shape [shape]="shape"> </app-shape>
+        <app-shape [color]="'red'" [shape]="shape"> </app-shape>
+    </div>
+</section>
+<section class="shape-container">
+    <div *ngFor="let shape of shapes1" class="shape">
+        <app-shape [color]="'green'" [shape]="shape"> </app-shape>
+    </div>
+</section>
+<section class="shape-container">
+    <div *ngFor="let shape of shapes2" class="shape">
+        <app-shape [color]="'blue'" [shape]="shape"> </app-shape>
+    </div>
+</section>
+<section class="shape-container">
+    <div *ngFor="let shape of shapes3" class="shape">
+        <app-shape [color]="'orange'" [shape]="shape"> </app-shape>
     </div>
 </section>
 
@@ -19,5 +34,3 @@
     [showAllBorders]="true"
     [borderColour]="'red'"
 ></app-grid>
-
-
