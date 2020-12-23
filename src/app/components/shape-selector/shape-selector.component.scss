@@ -1,6 +1,10 @@
 .shape-container {
-  display: flex;
-  flex-wrap: wrap;
-  overflow: auto;
-  height: 40vh;
+    display: flex;
+    flex-wrap: wrap;
+    overflow: auto;
+    height: 40vh;
+}
+
+.cdk-drag-placeholder {
+    display: none;
 }
