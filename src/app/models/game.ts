@@ -31,21 +31,56 @@ export class Game {
         return this._isHovered;
     }
 
-    fill(shape: Shape, point: Point) {
-        const points = shape.points.map(p => ({
-            rowIdx: p.rowIdx + point.rowIdx,
-            colIdx: p.colIdx + point.colIdx,
-        }));
-
-        points.forEach(p => {
-            if (Utils.isPointOutOfBounds(p, this._isFilled)) {
-                this._isFilled[p.colIdx][p.rowIdx] = true;
-            } else {
-                console.log(`Fill point: ${JSON.stringify(p)} out of bounds`);
-                return;
-            }
+    /**
+     * Fill the {@param shape} over the grid at {@param point}
+     */
+    fill(points: Point[]) {
+        const isFillSuccess = this.handleShapeEvent(points, p => {
+            this._isFilled[p.colIdx][p.rowIdx] = true;
         });
 
+        if (isFillSuccess) {
+            this.onSuccessfulFill(points);
+        }
+
+        return isFillSuccess;
+    }
+
+    /**
+     * Hover the {@param shape} over the grid at {@param point}
+     */
+    hover(points: Point[]): boolean {
+        return this.handleShapeEvent(points, point => {
+            this._isHovered[point.colIdx][point.rowIdx] = true;
+        });
+    }
+
+    /* ************************
+     * PRIVATE METHODS
+     * ************************/
+
+    private handleShapeEvent(
+        points: Point[],
+        onSuccess: (point: Point) => void
+    ): boolean {
+        this.resetIsHovered();
+
+        const isAnyPointOutOfBoundsOrFilled = !!points.find(
+            this.isOutOfBoundsOrFilled
+        );
+
+        if (isAnyPointOutOfBoundsOrFilled) {
+            console.log('a point is out of bounds, or has already been filled');
+            return false;
+        }
+
+        points.forEach(onSuccess);
+
+        return true;
+    }
+
+    private onSuccessfulFill(points: Point[]) {
+        const point = points[0]; // TODO: check all
         const bigSquareStartPoint: Point = {
             colIdx: Math.floor(point.colIdx / 3.0) * 3,
             rowIdx: Math.floor(point.rowIdx / 3.0) * 3,
@@ -54,8 +89,6 @@ export class Game {
         const clearBigSquare = this.isBigSquareFilled(bigSquareStartPoint);
         const clearVerticalLine = this.isVerticalLineFilled(point.colIdx);
         const clearHorizontalLine = this.isHorizontalLineFilled(point.rowIdx);
-
-        this.resetIsHovered();
 
         setTimeout(() => {
             if (clearBigSquare) {
@@ -72,30 +105,16 @@ export class Game {
         }, 200);
     }
 
-    hover(shape: Shape, point: Point) {
-        const points = shape.points.map(p => ({
-            rowIdx: p.rowIdx + point.rowIdx,
-            colIdx: p.colIdx + point.colIdx,
-        }));
-
-        this.resetIsHovered();
-
-        points.forEach(p => {
-            if (Utils.isPointOutOfBounds(p, this._isHovered)) {
-                this._isHovered[p.colIdx][p.rowIdx] = true;
-            } else {
-                console.log(`Hover point: ${JSON.stringify(point)} out of bounds`);
-            }
-        });
-    }
-
-    /* ************************
-     * PRIVATE METHODS
-     * ************************/
-
     private resetIsHovered() {
         this._isHovered.forEach(row => row.fill(false));
     }
+
+    private isOutOfBoundsOrFilled = (point: Point): boolean => {
+        return (
+            !Utils.isPointInBounds(point, this._isHovered) ||
+            this.isFilled(point.colIdx, point.rowIdx)
+        );
+    };
 
     private clearBigSquare(startPoint: Point) {
         for (let x = startPoint.colIdx; x < startPoint.colIdx + 3; x++) {

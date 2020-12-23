@@ -43,7 +43,7 @@ export class Utils {
         };
     }
 
-    public static isPointOutOfBounds(point: Point, array: any[][]) {
+    public static isPointInBounds(point: Point, array: any[][]) {
         return (
             point.colIdx < array.length &&
             point.colIdx >= 0 &&

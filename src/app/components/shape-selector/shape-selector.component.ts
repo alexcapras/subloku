@@ -41,8 +41,10 @@ export class ShapeSelectorComponent {
 
     onDragDropped(event: CdkDragDrop<Shape>) {
         this.game.fill(
-            this.dragShape,
-            Transformers.relative(this.relativeMousePoint, this.dragPoint)
+            Transformers.translate(
+                this.dragShape,
+                Transformers.relative(this.relativeMousePoint, this.dragPoint)
+            ).points
         );
         this.dragPoint = null;
         this.dragShape = null;
@@ -50,8 +52,10 @@ export class ShapeSelectorComponent {
 
     onDragMoved(event: CdkDragMove<Shape>) {
         this.game.hover(
-            this.dragShape,
-            Transformers.relative(this.relativeMousePoint, this.dragPoint)
+            Transformers.translate(
+                this.dragShape,
+                Transformers.relative(this.relativeMousePoint, this.dragPoint)
+            ).points
         );
     }
 
@@ -60,6 +64,7 @@ export class ShapeSelectorComponent {
         // @ts-ignore
         const { x, y } = dragElement.getBoundingClientRect();
         this.dragShape = dragStartEvent.source.data;
+        // TODO: I'm mapping to a Point too early here - need to keep it as a position until onDropped - i think this is what's causing the small errors
         this.dragPoint = Utils.mapPositionToPoint(
             Utils.calcRelativePosition(this.mousePositionSubject.getValue(), {
                 x: x - this.marginPx,

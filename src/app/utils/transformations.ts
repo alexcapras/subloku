@@ -2,6 +2,16 @@ import { Point, Shape } from '../models/models';
 
 export class Transformers {
     /**
+     * Returns a shape from the {@param shape}, translated to a {@param origin}
+     */
+    static translate = (shape: Shape, origin: Point): Shape => ({
+        points: shape.points.map(point => ({
+            rowIdx: point.rowIdx + origin.rowIdx,
+            colIdx: point.colIdx + origin.colIdx,
+        })),
+    });
+
+    /**
      * Returns a new point of {@param point} relative to an {@param anchor} point
      */
     static relative = (point: Point, anchor: Point): Point => ({
