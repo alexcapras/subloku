@@ -1,6 +1,14 @@
 import { Point, Shape } from '../models/models';
 
 export class Transformers {
+    /**
+     * Returns a new point of {@param point} relative to an {@param anchor} point
+     */
+    static relative = (point: Point, anchor: Point): Point => ({
+        colIdx: point.colIdx - anchor.colIdx,
+        rowIdx: point.rowIdx - anchor.rowIdx,
+    });
+
     /* rotations around origin:
         - 90deg (x,y) -> (y, -x)
         - 180deg (x,y) -> (-y, -x)
@@ -17,7 +25,7 @@ export class Transformers {
     /**
      * rotates {@param shape} anti-clockwise 90 degrees {@param n} times
      */
-    static rotate90n = (n: number) => (shape: Shape): Shape => {
+    static rotate90n = (n: number) => /** */ (shape: Shape): Shape => {
         const result: Shape = { points: shape.points };
         let count = 0;
 
@@ -32,7 +40,7 @@ export class Transformers {
         return Transformers.normalise(result);
     };
 
-    // places shape at center in top right quadrant
+    // places shape at center in top right quadrant, centered around (0, 0)
     static normalise = (shape: Shape): Shape => {
         const minCol = Math.min(...shape.points.map(({ colIdx }) => colIdx));
         const minRow = Math.min(...shape.points.map(({ rowIdx }) => rowIdx));

@@ -1,22 +1,6 @@
-<!--<cdk-drop-list></cdk-drop-list>-->
-<app-main-grid [game]="game"></app-main-grid>
+<app-board #board [game]="game"></app-board>
 
-<div cdkDropList>
-    <app-board #board [game]="game"></app-board>
-</div>
-
-<div cdkDropList>
-    <span *ngFor="let i of [1,2,3]">
-        <svg
-            width="160"
-            height="160"
-            cdkDrag
-            (cdkDragMoved)="onMove()"
-            (cdkDragDropped)="onDrop()"
-        >
-            <rect x="5" y="5" width="40" height="40" style="fill:blue;" />
-        </svg>
-    </span>
-</div>
-
-<app-shape-selector></app-shape-selector>
+<app-shape-selector
+    [game]="game"
+    [mousePositionSubject]="mousePositionSubject"
+></app-shape-selector>

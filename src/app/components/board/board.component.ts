@@ -65,19 +65,18 @@ export class BoardComponent implements OnInit {
         const color = this.game.isFilled(xIndex, yIndex)
             ? 'rgb(0,0,255)'
             : this.game.isHovered(xIndex, yIndex)
-            ? 'rgb(201, 201, 201)'
+            ? 'rgb(110, 110, 110)'
             : 'rgb(255, 255, 255)';
 
         return {
             'transform-origin': `${xx}px ${yy}px`, // <-- this is super important!
             fill: color,
+            'fill-opacity': this.game.isFilledOrHovered(xIndex, yIndex) ? 1 : 0,
             stroke: 'black',
-            'stroke-width': this.game.isFilled(xIndex, yIndex) ? 1.5 : 0,
-            'fill-opacity':
-                this.game.isFilled(xIndex, yIndex) ||
-                this.game.isHovered(xIndex, yIndex)
-                    ? 1
-                    : 0,
+            'stroke-opacity': 1,
+            'stroke-width': this.game.isFilledOrHovered(xIndex, yIndex)
+                ? 1.5
+                : 0,
         };
     }
 

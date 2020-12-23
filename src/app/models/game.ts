@@ -1,4 +1,4 @@
-import { Point } from './models';
+import { Point, Shape } from './models';
 import { Utils } from '../utils/utils';
 
 export class Game {
@@ -10,6 +10,10 @@ export class Game {
     constructor() {
         this._isFilled = Utils.createGrid<boolean>(9, 9, false);
         this._isHovered = Utils.createGrid<boolean>(9, 9, false);
+    }
+
+    public isFilledOrHovered(xIndex: number, yIndex: number) {
+        return this.isFilled(xIndex, yIndex) || this.isHovered(xIndex, yIndex);
     }
 
     public isFilled(xIndex: number, yIndex: number) {
@@ -27,13 +31,20 @@ export class Game {
         return this._isHovered;
     }
 
-    fill(point: Point) {
-        if (Utils.isPointOutOfBounds(point, this._isFilled)) {
-            this._isFilled[point.colIdx][point.rowIdx] = true;
-        } else {
-            console.log(`Fill point: ${JSON.stringify(point)} out of bounds`);
-            return;
-        }
+    fill(shape: Shape, point: Point) {
+        const points = shape.points.map(p => ({
+            rowIdx: p.rowIdx + point.rowIdx,
+            colIdx: p.colIdx + point.colIdx,
+        }));
+
+        points.forEach(p => {
+            if (Utils.isPointOutOfBounds(p, this._isFilled)) {
+                this._isFilled[p.colIdx][p.rowIdx] = true;
+            } else {
+                console.log(`Fill point: ${JSON.stringify(p)} out of bounds`);
+                return;
+            }
+        });
 
         const bigSquareStartPoint: Point = {
             colIdx: Math.floor(point.colIdx / 3.0) * 3,
@@ -61,14 +72,21 @@ export class Game {
         }, 200);
     }
 
-    hover(point: Point) {
+    hover(shape: Shape, point: Point) {
+        const points = shape.points.map(p => ({
+            rowIdx: p.rowIdx + point.rowIdx,
+            colIdx: p.colIdx + point.colIdx,
+        }));
+
         this.resetIsHovered();
 
-        if (Utils.isPointOutOfBounds(point, this._isHovered)) {
-            this._isHovered[point.colIdx][point.rowIdx] = true;
-        } else {
-            console.log(`Hover point: ${JSON.stringify(point)} out of bounds`);
-        }
+        points.forEach(p => {
+            if (Utils.isPointOutOfBounds(p, this._isHovered)) {
+                this._isHovered[p.colIdx][p.rowIdx] = true;
+            } else {
+                console.log(`Hover point: ${JSON.stringify(point)} out of bounds`);
+            }
+        });
     }
 
     /* ************************

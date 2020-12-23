@@ -1,12 +1,14 @@
-<!--<div-->
-<!--  cdkDropList-->
-<!--&gt;-->
-<!--  <svg width="160" height="160" cdkDrag-->
-<!--       (cdkDragMoved)="onMove()"-->
-<!--       (cdkDragDropped)="onDrop()"-->
-<!--  >-->
-<!--    <rect-->
-<!--      x="5" y="5" width="40" height="40"-->
-<!--      style="fill:blue;" />-->
-<!--  </svg>-->
-<!--</div>-->
+<section class="shape-container">
+    <div cdkDropList *ngFor="let shape of shapes" [ngStyle]="shapeStyle">
+        <app-shape
+            cdkDrag
+            color="blue"
+            [shape]="shape"
+            [cdkDragData]="shape"
+            (cdkDragMoved)="onDragMoved($event)"
+            (cdkDragDropped)="onDragDropped($event)"
+            (cdkDragStarted)="onDragStarted($event)"
+        >
+        </app-shape>
+    </div>
+</section>

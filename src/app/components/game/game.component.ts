@@ -8,7 +8,6 @@ import {
 import { BoardComponent } from '../board/board.component';
 import { BehaviorSubject } from 'rxjs';
 import { Position } from '../../models/models';
-import { Utils } from '../../utils/utils';
 import { Game } from '../../models/game';
 
 @Component({
@@ -27,7 +26,7 @@ export class GameComponent implements OnInit {
 
     game: Game;
 
-    @HostListener('mousemove', ['$event'])
+    @HostListener('document:mousemove', ['$event'])
     onMousemove(event: MouseEvent) {
         this.mousePositionSubject.next({
             x: event.clientX,
@@ -37,32 +36,5 @@ export class GameComponent implements OnInit {
 
     ngOnInit(): void {
         this.game = new Game();
-    }
-
-    onDrop() {
-        const point = Utils.mapPositionToPoint(
-            Utils.calcRelativePosition(
-                this.mousePositionSubject.getValue(),
-                this.anchorPosition
-            )
-        );
-        console.log(point);
-        this.game.fill(point);
-    }
-
-    onMove() {
-        const point = Utils.mapPositionToPoint(
-            Utils.calcRelativePosition(
-                this.mousePositionSubject.getValue(),
-                this.anchorPosition
-            )
-        );
-
-        this.game.hover(point);
-    }
-
-    get anchorPosition(): Position {
-        // @ts-ignore
-        return this.boardElement.board.nativeElement.getBoundingClientRect();
     }
 }
