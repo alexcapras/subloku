@@ -32,7 +32,7 @@ export class GameBoard {
     }
 
     /**
-     * Fill the {@param shape} over the grid at {@param point}
+     * Fill a list of {@param points} in the grid
      */
     fill(points: Point[]) {
         const isFillSuccess = this.handleShapeEvent(points, p => {
@@ -47,7 +47,7 @@ export class GameBoard {
     }
 
     /**
-     * Hover the {@param shape} over the grid at {@param point}
+     * Hover a list of {@param points} in the grid
      */
     hover(points: Point[]): boolean {
         return this.handleShapeEvent(points, point => {
