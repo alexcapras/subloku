@@ -7,6 +7,7 @@ import { CdkDragDrop, CdkDragMove, CdkDragStart } from '@angular/cdk/drag-drop';
 import { Vector } from '../../models/vector';
 import { Shape } from '../../models/shape';
 import * as constants from '../../utils/constants';
+import { ShapeQueue } from '../../models/shape-queue';
 
 @Component({
     selector: 'app-shape-selector',
@@ -17,9 +18,8 @@ export class ShapeSelectorComponent {
     private readonly marginPx = 20;
 
     private dragShape: Shape;
+    private dragShapeIndex: number;
     private dragPoint: Vector;
-
-    shapes: Shape[] = [...shapes, ...shapes.map(shape => shape.rotate90n(1))];
 
     @Input()
     mousePosition: Vector = new Vector(0, 0);
@@ -29,6 +29,9 @@ export class ShapeSelectorComponent {
 
     @Input()
     game: GameBoard;
+
+    @Input()
+    shapeQueue: ShapeQueue;
 
     get shapeStyle() {
         return {
@@ -53,17 +56,25 @@ export class ShapeSelectorComponent {
     }
 
     onDragDropped(event: CdkDragDrop<Shape>) {
-        this.game.fill(this.pointsToFill);
+        const success = this.game.fill(this.pointsToFill);
+        if (success) {
+            this.shapeQueue.remove(this.dragShapeIndex);
+        }
+
         this.dragPoint = null;
         this.dragShape = null;
+        this.dragShapeIndex = null;
     }
 
-    onDragMoved(event: CdkDragMove<Shape>) {
+    onDragMoved(event: CdkDragMove<{ shape: Shape; index: number }>) {
         this.game.hover(this.pointsToFill);
     }
 
-    onDragStarted(dragStartEvent: CdkDragStart<Shape>) {
-        this.dragShape = dragStartEvent.source.data;
+    onDragStarted(
+        dragStartEvent: CdkDragStart<{ shape: Shape; index: number }>
+    ) {
+        this.dragShape = dragStartEvent.source.data.shape;
+        this.dragShapeIndex = dragStartEvent.source.data.index;
 
         const dragElement = dragStartEvent.source.element.nativeElement;
         const { left: x, top: y } = dragElement.getBoundingClientRect();

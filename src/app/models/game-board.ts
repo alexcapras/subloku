@@ -43,7 +43,7 @@ export class GameBoard {
     /**
      * Fill a list of {@param points} in the grid
      */
-    fill(points: Vector[]) {
+    fill(points: Vector[]): boolean {
         const t0 = performance.now();
 
         const isFillSuccess = this.handleShapeEvent(points, p => {

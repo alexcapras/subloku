@@ -8,6 +8,7 @@ import {
 import { BehaviorSubject } from 'rxjs';
 import { Vector } from '../../models/vector';
 import { GameBoard } from '../../models/game-board';
+import { ShapeQueue } from '../../models/shape-queue';
 
 @Component({
     selector: 'app-game',
@@ -23,14 +24,18 @@ export class GameComponent implements OnInit {
     > = new BehaviorSubject(new Vector(0, 0));
 
     game: GameBoard;
+    shapeQueue: ShapeQueue;
 
     @HostListener('document:mousemove', ['$event'])
     onMousemove(event: MouseEvent) {
-        this.mousePositionSubject.next(new Vector(event.clientX, event.clientY));
+        this.mousePositionSubject.next(
+            new Vector(event.clientX, event.clientY)
+        );
     }
 
     ngOnInit(): void {
         this.game = new GameBoard();
+        this.shapeQueue = new ShapeQueue();
     }
 
     get mousePosition(): Vector {

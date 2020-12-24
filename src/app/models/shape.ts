@@ -62,7 +62,7 @@ export class Shape {
     /**
      *   places shape at center in top right quadrant, centered around (0, 0)
      */
-    normalise() {
+    normalise(): Shape {
         const shapeLimits = this.getLimits();
         const translationVector = new Vector(
             shapeLimits.xLimits.min,
