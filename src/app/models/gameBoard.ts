@@ -1,7 +1,7 @@
-import { Point, Shape } from './models';
+import { Point } from './models';
 import { Utils } from '../utils/utils';
 
-export class Game {
+export class GameBoard {
     // tslint:disable-next-line:variable-name
     private readonly _isFilled: boolean[][];
     // tslint:disable-next-line:variable-name

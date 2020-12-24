@@ -3,7 +3,7 @@ import { Point, Position, Shape } from '../../models/models';
 import { Transformers } from '../../utils/transformations';
 import { shapes } from 'src/app/utils/shapes';
 import { Utils } from '../../utils/utils';
-import { Game } from '../../models/game';
+import { GameBoard } from '../../models/gameBoard';
 import { BehaviorSubject } from 'rxjs';
 import { CdkDragDrop, CdkDragMove, CdkDragStart } from '@angular/cdk/drag-drop';
 
@@ -27,7 +27,7 @@ export class ShapeSelectorComponent {
     });
 
     @Input()
-    game: Game;
+    game: GameBoard;
 
     get shapeStyle() {
         return {

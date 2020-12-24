@@ -8,7 +8,7 @@ import {
 import { BoardComponent } from '../board/board.component';
 import { BehaviorSubject } from 'rxjs';
 import { Position } from '../../models/models';
-import { Game } from '../../models/game';
+import { GameBoard } from '../../models/gameBoard';
 
 @Component({
     selector: 'app-game',
@@ -24,7 +24,7 @@ export class GameComponent implements OnInit {
         y: 0,
     });
 
-    game: Game;
+    game: GameBoard;
 
     @HostListener('document:mousemove', ['$event'])
     onMousemove(event: MouseEvent) {
@@ -35,6 +35,6 @@ export class GameComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.game = new Game();
+        this.game = new GameBoard();
     }
 }

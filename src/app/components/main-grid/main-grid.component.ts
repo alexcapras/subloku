@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Game } from '../../models/game';
+import { GameBoard } from '../../models/gameBoard';
 
 @Component({
     selector: 'app-main-grid',
@@ -8,7 +8,7 @@ import { Game } from '../../models/game';
 })
 export class MainGridComponent implements OnInit {
     @Input()
-    game: Game;
+    game: GameBoard;
 
     constructor() {}
 

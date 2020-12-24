@@ -3,7 +3,7 @@ import * as constants from '../../utils/constants';
 
 import { trigger, transition, useAnimation } from '@angular/animations';
 import { Line, Square } from '../../models/models';
-import { Game } from '../../models/game';
+import { GameBoard } from '../../models/gameBoard';
 import { Mappers } from '../../utils/mappers';
 import { emptyFillAnimation } from '../../animations/empty-fill.animation';
 
@@ -28,7 +28,7 @@ export class BoardComponent implements OnInit {
     board: ElementRef;
 
     @Input()
-    game: Game;
+    game: GameBoard;
 
     ngOnInit() {
         const xIndices = Array(9)
