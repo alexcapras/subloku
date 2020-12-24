@@ -35,6 +35,8 @@ export class GameBoard {
      * Fill a list of {@param points} in the grid
      */
     fill(points: Point[]) {
+        const t0 = performance.now();
+
         const isFillSuccess = this.handleShapeEvent(points, p => {
             this._isFilled[p.colIdx][p.rowIdx] = true;
         });
@@ -43,6 +45,8 @@ export class GameBoard {
             this.onSuccessfulFill(points);
         }
 
+        const t1 = performance.now();
+        console.log(`Call to fill() took ${t1 - t0} milliseconds.`);
         return isFillSuccess;
     }
 
@@ -70,7 +74,7 @@ export class GameBoard {
         );
 
         if (isAnyPointOutOfBoundsOrFilled) {
-            console.log('a point is out of bounds, or has already been filled');
+            // console.log('a point is out of bounds, or has already been filled');
             return false;
         }
 
@@ -91,6 +95,8 @@ export class GameBoard {
         const clearHorizontalLine = this.isHorizontalLineFilled(point.rowIdx);
 
         setTimeout(() => {
+            const t0 = performance.now();
+
             if (clearBigSquare) {
                 this.clearBigSquare(bigSquareStartPoint);
             }
@@ -102,7 +108,11 @@ export class GameBoard {
             if (clearHorizontalLine) {
                 this.clearHorizontalLine(point.rowIdx);
             }
-        }, 200);
+            const t1 = performance.now();
+            console.log(
+                `Call to onSuccessTimeout() took ${t1 - t0} milliseconds.`
+            );
+        }, 0);
     }
 
     private resetIsHovered() {

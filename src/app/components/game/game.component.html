@@ -1,6 +1,11 @@
-<app-board #board [game]="game"></app-board>
+<section class="board-wrapper">
+    <div #board>
+        <app-board [game]="game"></app-board>
+    </div>
+</section>
 
 <app-shape-selector
     [game]="game"
+    [boardPosition]="boardPosition"
     [mousePositionSubject]="mousePositionSubject"
 ></app-shape-selector>

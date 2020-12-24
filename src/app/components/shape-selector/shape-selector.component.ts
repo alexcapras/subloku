@@ -3,7 +3,7 @@ import { Point, Position, Shape } from '../../models/models';
 import { Transformers } from '../../utils/transformations';
 import { shapes } from 'src/app/utils/shapes';
 import { Utils } from '../../utils/utils';
-import { GameBoard } from '../../models/gameBoard';
+import { GameBoard } from '../../models/game-board';
 import { BehaviorSubject } from 'rxjs';
 import { CdkDragDrop, CdkDragMove, CdkDragStart } from '@angular/cdk/drag-drop';
 
@@ -27,6 +27,9 @@ export class ShapeSelectorComponent {
     });
 
     @Input()
+    boardPosition: Position;
+
+    @Input()
     game: GameBoard;
 
     get shapeStyle() {
@@ -35,41 +38,65 @@ export class ShapeSelectorComponent {
         };
     }
 
-    get relativeMousePoint() {
-        return Utils.mapPositionToPoint(this.mousePositionSubject.getValue());
+    private get relativeMousePosition() {
+        return Transformers.translatePosition(
+            this.mousePositionSubject.getValue(),
+            this.boardPosition
+        );
+    }
+
+    private get relativeMousePoint() {
+        return Transformers.relative(
+            Utils.mapPositionToPoint(this.relativeMousePosition),
+            this.dragPoint
+        );
+    }
+
+    private get pointsToFill() {
+        return Transformers.translate(this.dragShape, this.relativeMousePoint)
+            .points;
     }
 
     onDragDropped(event: CdkDragDrop<Shape>) {
-        this.game.fill(
-            Transformers.translate(
-                this.dragShape,
-                Transformers.relative(this.relativeMousePoint, this.dragPoint)
-            ).points
-        );
+        this.game.fill(this.pointsToFill);
         this.dragPoint = null;
         this.dragShape = null;
     }
 
     onDragMoved(event: CdkDragMove<Shape>) {
-        this.game.hover(
-            Transformers.translate(
-                this.dragShape,
-                Transformers.relative(this.relativeMousePoint, this.dragPoint)
-            ).points
-        );
+        this.game.hover(this.pointsToFill);
     }
 
     onDragStarted(dragStartEvent: CdkDragStart<Shape>) {
-        const dragElement = dragStartEvent.source.element.nativeElement;
-        // @ts-ignore
-        const { x, y } = dragElement.getBoundingClientRect();
         this.dragShape = dragStartEvent.source.data;
-        // TODO: I'm mapping to a Point too early here - need to keep it as a position until onDropped - i think this is what's causing the small errors
-        this.dragPoint = Utils.mapPositionToPoint(
-            Utils.calcRelativePosition(this.mousePositionSubject.getValue(), {
-                x: x - this.marginPx,
-                y: y - this.marginPx,
-            })
+
+        const dragElement = dragStartEvent.source.element.nativeElement;
+        const { left, top } = dragElement.getBoundingClientRect();
+        const shapeLimits = Utils.shapeLimits(this.dragShape);
+        const dragPosition = Utils.calcRelativePosition(
+            this.mousePositionSubject.getValue(),
+            {
+                x: left, // - this.marginPx,
+                y: top, // - this.marginPx,
+            }
         );
+        const dragPointRaw = Utils.mapPositionToPoint(dragPosition);
+        this.dragPoint = {
+            rowIdx: Utils.withinLimits(
+                dragPointRaw.rowIdx,
+                shapeLimits.row.min,
+                shapeLimits.row.max
+            ),
+            colIdx: Utils.withinLimits(
+                dragPointRaw.colIdx,
+                shapeLimits.col.min,
+                shapeLimits.col.max
+            ),
+        };
+        console.log('mousePos:', this.mousePositionSubject.getValue());
+        console.log('anchorPos:', { left, top });
+        console.log('dragPosition:', dragPosition);
+        console.log('dragPointRaw:', dragPointRaw);
+        console.log('dragPoint:', this.dragPoint);
     }
 }

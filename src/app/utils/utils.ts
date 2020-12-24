@@ -1,5 +1,15 @@
-import { Point, Position } from '../models/models';
+import { Point, Position, Shape } from '../models/models';
 import * as constants from './constants';
+
+export interface ShapeLimits {
+    col: ShapeLimit;
+    row: ShapeLimit;
+}
+
+export interface ShapeLimit {
+    min: number;
+    max: number;
+}
 
 export class Utils {
     /**
@@ -71,4 +81,28 @@ export class Utils {
 
         return grid[colIdx][rowIdx];
     }
+
+    public static shapeLimits = (shape: Shape): ShapeLimits => {
+        const colIndices = shape.points.map(({ colIdx }) => colIdx);
+        const rowIndices = shape.points.map(({ rowIdx }) => rowIdx);
+
+        return {
+            col: {
+                min: Math.min(...colIndices),
+                max: Math.max(...colIndices),
+            },
+            row: {
+                min: Math.min(...rowIndices),
+                max: Math.max(...rowIndices),
+            },
+        };
+    };
+
+    public static withinLimits = (
+        value: number,
+        min: number,
+        max: number
+    ): number => {
+        return value < min ? min : value > max ? max : value;
+    };
 }

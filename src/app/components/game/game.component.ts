@@ -5,10 +5,9 @@ import {
     OnInit,
     ViewChild,
 } from '@angular/core';
-import { BoardComponent } from '../board/board.component';
 import { BehaviorSubject } from 'rxjs';
 import { Position } from '../../models/models';
-import { GameBoard } from '../../models/gameBoard';
+import { GameBoard } from '../../models/game-board';
 
 @Component({
     selector: 'app-game',
@@ -17,7 +16,7 @@ import { GameBoard } from '../../models/gameBoard';
 })
 export class GameComponent implements OnInit {
     @ViewChild('board', { static: false })
-    boardElement: ElementRef<BoardComponent>;
+    boardElement: ElementRef<HTMLTemplateElement>;
 
     mousePositionSubject: BehaviorSubject<Position> = new BehaviorSubject({
         x: 0,
@@ -36,5 +35,16 @@ export class GameComponent implements OnInit {
 
     ngOnInit(): void {
         this.game = new GameBoard();
+    }
+
+    get boardPosition(): Position {
+        const { left: x, top: y } = !!this.boardElement
+            ? this.boardElement.nativeElement.getBoundingClientRect()
+            : { left: 0, top: 0 };
+
+        return {
+            x,
+            y,
+        };
     }
 }

@@ -1,4 +1,5 @@
-import { Point, Shape } from '../models/models';
+import { Point, Shape, Position } from '../models/models';
+import { Utils } from './utils';
 
 export class Transformers {
     /**
@@ -9,6 +10,14 @@ export class Transformers {
             rowIdx: point.rowIdx + origin.rowIdx,
             colIdx: point.colIdx + origin.colIdx,
         })),
+    });
+
+    static translatePosition = (
+        position: Position,
+        origin: Position
+    ): Position => ({
+        x: position.x - origin.x,
+        y: position.y - origin.y,
     });
 
     /**
@@ -52,13 +61,12 @@ export class Transformers {
 
     // places shape at center in top right quadrant, centered around (0, 0)
     static normalise = (shape: Shape): Shape => {
-        const minCol = Math.min(...shape.points.map(({ colIdx }) => colIdx));
-        const minRow = Math.min(...shape.points.map(({ rowIdx }) => rowIdx));
+        const shapeLimits = Utils.shapeLimits(shape);
 
         return {
             points: shape.points.map(({ colIdx, rowIdx }) => ({
-                colIdx: colIdx - minCol,
-                rowIdx: rowIdx - minRow,
+                colIdx: colIdx - shapeLimits.col.min,
+                rowIdx: rowIdx - shapeLimits.row.min,
             })),
         };
     };

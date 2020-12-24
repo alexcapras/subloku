@@ -3,7 +3,7 @@ import * as constants from '../../utils/constants';
 
 import { trigger, transition, useAnimation } from '@angular/animations';
 import { Line, Square } from '../../models/models';
-import { GameBoard } from '../../models/gameBoard';
+import { GameBoard } from '../../models/game-board';
 import { Mappers } from '../../utils/mappers';
 import { emptyFillAnimation } from '../../animations/empty-fill.animation';
 

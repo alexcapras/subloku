@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { GameBoard } from '../../models/gameBoard';
+import { GameBoard } from '../../models/game-board';
 
 @Component({
     selector: 'app-main-grid',
