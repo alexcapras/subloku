@@ -18,9 +18,9 @@ export class GameComponent implements OnInit {
     @ViewChild('board', { static: false })
     boardElement: ElementRef<HTMLTemplateElement>;
 
-    mousePositionSubject: BehaviorSubject<Point> = new BehaviorSubject(
-        new Point(0, 0)
-    );
+    private readonly mousePositionSubject: BehaviorSubject<
+        Point
+    > = new BehaviorSubject(new Point(0, 0));
 
     game: GameBoard;
 
@@ -31,6 +31,10 @@ export class GameComponent implements OnInit {
 
     ngOnInit(): void {
         this.game = new GameBoard();
+    }
+
+    get mousePosition(): Point {
+        return this.mousePositionSubject.getValue();
     }
 
     get boardPosition(): Point {

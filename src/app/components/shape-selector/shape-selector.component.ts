@@ -22,9 +22,7 @@ export class ShapeSelectorComponent {
     shapes: Shape[] = [...shapes, ...shapes.map(shape => shape.rotate90n(1))];
 
     @Input()
-    mousePositionSubject: BehaviorSubject<Point> = new BehaviorSubject(
-        new Point(0, 0)
-    );
+    mousePosition: Point = new Point(0, 0);
 
     @Input()
     boardPosition: Point;
@@ -39,9 +37,7 @@ export class ShapeSelectorComponent {
     }
 
     private get relativeMousePosition(): Point {
-        return this.mousePositionSubject
-            .getValue()
-            .subtract(this.boardPosition);
+        return this.mousePosition.subtract(this.boardPosition);
     }
 
     private get relativeMousePoint() {
@@ -72,9 +68,7 @@ export class ShapeSelectorComponent {
         const dragElement = dragStartEvent.source.element.nativeElement;
         const { left: x, top: y } = dragElement.getBoundingClientRect();
         const shapeLimits = this.dragShape.getLimits();
-        const dragPosition = this.mousePositionSubject
-            .getValue()
-            .subtract(new Point(x, y));
+        const dragPosition = this.mousePosition.subtract(new Point(x, y));
         const dragPointRaw = dragPosition
             .subtract(new Point(constants.OFFSET, constants.OFFSET))
             .scaleDown(constants.SQUARE_SIZE)
@@ -93,7 +87,7 @@ export class ShapeSelectorComponent {
                 shapeLimits.yLimits.max
             )
         );
-        console.log('mousePos:', this.mousePositionSubject.getValue());
+        console.log('mousePos:', this.mousePosition);
         console.log('anchorPos:', { x, y });
         console.log('dragPosition:', dragPosition);
         console.log('dragPointRaw:', dragPointRaw);
