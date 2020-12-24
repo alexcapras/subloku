@@ -1,15 +1,4 @@
-import { Point, Position, Shape } from '../models/models';
-import * as constants from './constants';
-
-export interface ShapeLimits {
-    col: ShapeLimit;
-    row: ShapeLimit;
-}
-
-export interface ShapeLimit {
-    min: number;
-    max: number;
-}
+import { Point } from '../models/point';
 
 export class Utils {
     /**
@@ -31,26 +20,6 @@ export class Utils {
         return this.createArray(cols, defaultValue).map(_ =>
             this.createArray(rows, defaultValue)
         );
-    }
-
-    public static calcRelativePosition(
-        position: Position,
-        anchorPosition: Position
-    ): Position {
-        return {
-            x: position.x - anchorPosition.x,
-            y: position.y - anchorPosition.y,
-        };
-    }
-
-    public static mapPositionToPoint(position: Position): Point {
-        const relativeX = position.x - constants.OFFSET;
-        const relativeY = position.y - constants.OFFSET;
-
-        return {
-            colIdx: Math.floor(relativeX / constants.SQUARE_SIZE),
-            rowIdx: Math.floor(relativeY / constants.SQUARE_SIZE),
-        };
     }
 
     public static isPointInBounds(point: Point, array: any[][]) {
@@ -81,22 +50,6 @@ export class Utils {
 
         return grid[colIdx][rowIdx];
     }
-
-    public static shapeLimits = (shape: Shape): ShapeLimits => {
-        const colIndices = shape.points.map(({ colIdx }) => colIdx);
-        const rowIndices = shape.points.map(({ rowIdx }) => rowIdx);
-
-        return {
-            col: {
-                min: Math.min(...colIndices),
-                max: Math.max(...colIndices),
-            },
-            row: {
-                min: Math.min(...rowIndices),
-                max: Math.max(...rowIndices),
-            },
-        };
-    };
 
     public static withinLimits = (
         value: number,

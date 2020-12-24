@@ -1,11 +1,12 @@
 import { Component, Input } from '@angular/core';
-import { Point, Position, Shape } from '../../models/models';
-import { Transformers } from '../../utils/transformations';
 import { shapes } from 'src/app/utils/shapes';
 import { Utils } from '../../utils/utils';
 import { GameBoard } from '../../models/game-board';
 import { BehaviorSubject } from 'rxjs';
 import { CdkDragDrop, CdkDragMove, CdkDragStart } from '@angular/cdk/drag-drop';
+import { Point } from '../../models/point';
+import { Shape } from '../../models/shape';
+import * as constants from '../../utils/constants';
 
 @Component({
     selector: 'app-shape-selector',
@@ -18,16 +19,15 @@ export class ShapeSelectorComponent {
     private dragShape: Shape;
     private dragPoint: Point;
 
-    shapes: Shape[] = [...shapes, ...shapes.map(Transformers.rotate90n(1))];
+    shapes: Shape[] = [...shapes, ...shapes.map(shape => shape.rotate90n(1))];
 
     @Input()
-    mousePositionSubject: BehaviorSubject<Position> = new BehaviorSubject({
-        x: 0,
-        y: 0,
-    });
+    mousePositionSubject: BehaviorSubject<Point> = new BehaviorSubject(
+        new Point(0, 0)
+    );
 
     @Input()
-    boardPosition: Position;
+    boardPosition: Point;
 
     @Input()
     game: GameBoard;
@@ -38,23 +38,22 @@ export class ShapeSelectorComponent {
         };
     }
 
-    private get relativeMousePosition() {
-        return Transformers.translatePosition(
-            this.mousePositionSubject.getValue(),
-            this.boardPosition
-        );
+    private get relativeMousePosition(): Point {
+        return this.mousePositionSubject
+            .getValue()
+            .subtract(this.boardPosition);
     }
 
     private get relativeMousePoint() {
-        return Transformers.relative(
-            Utils.mapPositionToPoint(this.relativeMousePosition),
-            this.dragPoint
-        );
+        return this.relativeMousePosition
+            .subtract(new Point(constants.OFFSET, constants.OFFSET))
+            .scaleDown(constants.SQUARE_SIZE)
+            .round()
+            .subtract(this.dragPoint);
     }
 
     private get pointsToFill() {
-        return Transformers.translate(this.dragShape, this.relativeMousePoint)
-            .points;
+        return this.dragShape.translateBy(this.relativeMousePoint).points;
     }
 
     onDragDropped(event: CdkDragDrop<Shape>) {
@@ -71,30 +70,31 @@ export class ShapeSelectorComponent {
         this.dragShape = dragStartEvent.source.data;
 
         const dragElement = dragStartEvent.source.element.nativeElement;
-        const { left, top } = dragElement.getBoundingClientRect();
-        const shapeLimits = Utils.shapeLimits(this.dragShape);
-        const dragPosition = Utils.calcRelativePosition(
-            this.mousePositionSubject.getValue(),
-            {
-                x: left, // - this.marginPx,
-                y: top, // - this.marginPx,
-            }
-        );
-        const dragPointRaw = Utils.mapPositionToPoint(dragPosition);
-        this.dragPoint = {
-            rowIdx: Utils.withinLimits(
-                dragPointRaw.rowIdx,
-                shapeLimits.row.min,
-                shapeLimits.row.max
-            ),
-            colIdx: Utils.withinLimits(
+        const { left: x, top: y } = dragElement.getBoundingClientRect();
+        const shapeLimits = this.dragShape.getLimits();
+        const dragPosition = this.mousePositionSubject
+            .getValue()
+            .subtract(new Point(x, y));
+        const dragPointRaw = dragPosition
+            .subtract(new Point(constants.OFFSET, constants.OFFSET))
+            .scaleDown(constants.SQUARE_SIZE)
+            .round();
+
+        console.log('shapeLimits', shapeLimits);
+        this.dragPoint = new Point(
+            Utils.withinLimits(
                 dragPointRaw.colIdx,
-                shapeLimits.col.min,
-                shapeLimits.col.max
+                shapeLimits.xLimits.min,
+                shapeLimits.xLimits.max
             ),
-        };
+            Utils.withinLimits(
+                dragPointRaw.rowIdx,
+                shapeLimits.yLimits.min,
+                shapeLimits.yLimits.max
+            )
+        );
         console.log('mousePos:', this.mousePositionSubject.getValue());
-        console.log('anchorPos:', { left, top });
+        console.log('anchorPos:', { x, y });
         console.log('dragPosition:', dragPosition);
         console.log('dragPointRaw:', dragPointRaw);
         console.log('dragPoint:', this.dragPoint);

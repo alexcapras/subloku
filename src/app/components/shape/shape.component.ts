@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Shape } from '../../models/models';
+import { Shape } from '../../models/shape';
 import { Utils } from '../../utils/utils';
 
 @Component({
@@ -13,8 +13,10 @@ export class ShapeComponent {
 
     @Input()
     set shape(shape: Shape) {
-        this.rows = Math.max(...shape.points.map(point => point.rowIdx)) + 1;
-        this.cols = Math.max(...shape.points.map(point => point.colIdx)) + 1;
+        // TODO: don't assume 0 minimum
+        const limits = shape.getLimits();
+        this.rows = limits.yLimits.max + 1;
+        this.cols = limits.xLimits.max + 1;
         this.filled = Utils.createGrid<boolean>(this.cols, this.rows, false);
         shape.points.forEach(
             ({ colIdx, rowIdx }) => (this.filled[colIdx][rowIdx] = true)

@@ -1,5 +1,5 @@
-import { Point } from './models';
 import { Utils } from '../utils/utils';
+import { Point } from './point';
 
 export class GameBoard {
     // tslint:disable-next-line:variable-name
@@ -85,10 +85,10 @@ export class GameBoard {
 
     private onSuccessfulFill(points: Point[]) {
         const point = points[0]; // TODO: check all
-        const bigSquareStartPoint: Point = {
-            colIdx: Math.floor(point.colIdx / 3.0) * 3,
-            rowIdx: Math.floor(point.rowIdx / 3.0) * 3,
-        };
+        const bigSquareStartPoint: Point = point
+            .scaleDown(3.0)
+            .round()
+            .scaleUp(3);
 
         const clearBigSquare = this.isBigSquareFilled(bigSquareStartPoint);
         const clearVerticalLine = this.isVerticalLineFilled(point.colIdx);

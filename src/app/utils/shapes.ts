@@ -1,98 +1,66 @@
-import { Shape } from '../models/models';
+import { Shape } from '../models/shape';
+import { Point } from '../models/point';
 
 export const shapes: Shape[] = [
-    {
-        // Single point
-        points: [{ colIdx: 0, rowIdx: 0 }],
-    },
-    {
-        // Small (2-cell) line
-        points: [
-            { colIdx: 0, rowIdx: 0 },
-            { colIdx: 0, rowIdx: 1 },
-        ],
-    },
-    {
-        // Medium (3-cell) line
-        points: [
-            { colIdx: 0, rowIdx: 0 },
-            { colIdx: 0, rowIdx: 1 },
-            { colIdx: 0, rowIdx: 2 },
-        ],
-    },
-    {
-        // Big (4-cell) line
-        points: [
-            { colIdx: 0, rowIdx: 0 },
-            { colIdx: 0, rowIdx: 1 },
-            { colIdx: 0, rowIdx: 2 },
-            { colIdx: 0, rowIdx: 3 },
-        ],
-    },
-    {
-        // Huge (5-cell) line
-        points: [
-            { colIdx: 0, rowIdx: 0 },
-            { colIdx: 0, rowIdx: 1 },
-            { colIdx: 0, rowIdx: 2 },
-            { colIdx: 0, rowIdx: 3 },
-            { colIdx: 0, rowIdx: 4 },
-        ],
-    },
-    {
-        // Small square
-        points: [
-            { colIdx: 0, rowIdx: 0 },
-            { colIdx: 1, rowIdx: 0 },
-            { colIdx: 0, rowIdx: 1 },
-            { colIdx: 1, rowIdx: 1 },
-        ],
-    },
-    {
-        // Small L
-        points: [
-            { colIdx: 0, rowIdx: 0 },
-            { colIdx: 0, rowIdx: 1 },
-            { colIdx: 1, rowIdx: 1 },
-        ],
-    },
-    {
-        // Medium L
-        points: [
-            { colIdx: 0, rowIdx: 0 },
-            { colIdx: 0, rowIdx: 1 },
-            { colIdx: 0, rowIdx: 2 },
-            { colIdx: 1, rowIdx: 2 },
-        ],
-    },
-    {
-        // Big L
-        points: [
-            { colIdx: 0, rowIdx: 0 },
-            { colIdx: 0, rowIdx: 1 },
-            { colIdx: 0, rowIdx: 2 },
-            { colIdx: 1, rowIdx: 2 },
-            { colIdx: 2, rowIdx: 2 },
-        ],
-    },
-    {
-        // Cross (Like on the Swiss flag)
-        points: [
-            { colIdx: 0, rowIdx: 1 },
-            { colIdx: 1, rowIdx: 0 },
-            { colIdx: 1, rowIdx: 1 },
-            { colIdx: 1, rowIdx: 2 },
-            { colIdx: 2, rowIdx: 1 },
-        ],
-    },
-    {
-        // Big T
-        points: [
-            { colIdx: 0, rowIdx: 0 },
-            { colIdx: 1, rowIdx: 0 },
-            { colIdx: 2, rowIdx: 0 },
-            { colIdx: 1, rowIdx: 1 },
-            { colIdx: 1, rowIdx: 2 },
-        ],
-    },
+    // Single point
+    new Shape([new Point(0, 0)]),
+    // Small (2-cell) line
+    new Shape([new Point(0, 0), new Point(0, 1)]),
+    // Medium (3-cell) line
+    new Shape([new Point(0, 0), new Point(0, 1), new Point(0, 2)]),
+    // Big (4-cell) line
+    new Shape([
+        new Point(0, 0),
+        new Point(0, 1),
+        new Point(0, 2),
+        new Point(0, 3),
+    ]),
+    // Huge (5-cell) line
+    new Shape([
+        new Point(0, 0),
+        new Point(0, 1),
+        new Point(0, 2),
+        new Point(0, 3),
+        new Point(0, 4),
+    ]),
+    // Small square
+    new Shape([
+        new Point(0, 0),
+        new Point(0, 1),
+        new Point(1, 0),
+        new Point(1, 1),
+    ]),
+    // Small L
+    new Shape([new Point(0, 0), new Point(0, 1), new Point(1, 1)]),
+    // Medium L
+    new Shape([
+        new Point(0, 0),
+        new Point(0, 1),
+        new Point(0, 2),
+        new Point(1, 2),
+    ]),
+    // Big L
+    new Shape([
+        new Point(0, 0),
+        new Point(0, 1),
+        new Point(0, 2),
+        new Point(1, 2),
+        new Point(2, 2),
+    ]),
+    // Cross (Like on the Swiss flag)
+    new Shape([
+        new Point(0, 1),
+        new Point(1, 0),
+        new Point(1, 1),
+        new Point(1, 2),
+        new Point(2, 1),
+    ]),
+    // Big T
+    new Shape([
+        new Point(0, 0),
+        new Point(1, 0),
+        new Point(2, 0),
+        new Point(1, 1),
+        new Point(1, 2),
+    ]),
 ];
