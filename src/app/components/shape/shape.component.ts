@@ -18,9 +18,7 @@ export class ShapeComponent {
         this.rows = limits.yLimits.max + 1;
         this.cols = limits.xLimits.max + 1;
         this.filled = Utils.createGrid<boolean>(this.cols, this.rows, false);
-        shape.points.forEach(
-            ({ colIdx, rowIdx }) => (this.filled[colIdx][rowIdx] = true)
-        );
+        shape.points.forEach(({ x, y }) => (this.filled[x][y] = true));
     }
 
     rows: number;

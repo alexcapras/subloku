@@ -6,7 +6,7 @@ import {
     ViewChild,
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Point } from '../../models/point';
+import { Vector } from '../../models/vector';
 import { GameBoard } from '../../models/game-board';
 
 @Component({
@@ -19,29 +19,29 @@ export class GameComponent implements OnInit {
     boardElement: ElementRef<HTMLTemplateElement>;
 
     private readonly mousePositionSubject: BehaviorSubject<
-        Point
-    > = new BehaviorSubject(new Point(0, 0));
+        Vector
+    > = new BehaviorSubject(new Vector(0, 0));
 
     game: GameBoard;
 
     @HostListener('document:mousemove', ['$event'])
     onMousemove(event: MouseEvent) {
-        this.mousePositionSubject.next(new Point(event.clientX, event.clientY));
+        this.mousePositionSubject.next(new Vector(event.clientX, event.clientY));
     }
 
     ngOnInit(): void {
         this.game = new GameBoard();
     }
 
-    get mousePosition(): Point {
+    get mousePosition(): Vector {
         return this.mousePositionSubject.getValue();
     }
 
-    get boardPosition(): Point {
+    get boardPosition(): Vector {
         const { left: x, top: y } = !!this.boardElement
             ? this.boardElement.nativeElement.getBoundingClientRect()
             : { left: 0, top: 0 };
 
-        return new Point(x, y);
+        return new Vector(x, y);
     }
 }

@@ -1,4 +1,4 @@
-import { Point } from '../models/point';
+import { Vector } from '../models/vector';
 
 export class Utils {
     /**
@@ -22,12 +22,18 @@ export class Utils {
         );
     }
 
-    public static isPointInBounds(point: Point, array: any[][]) {
+    public static createLinearGrid(cols: number, rows: number): Vector[][] {
+        return this.createLinearArray(cols).map(col =>
+            this.createLinearArray(rows).map(row => new Vector(col, row))
+        );
+    }
+
+    public static isPointInBounds(point: Vector, array: any[][]) {
         return (
-            point.colIdx < array.length &&
-            point.colIdx >= 0 &&
-            point.rowIdx < array[point.colIdx].length &&
-            point.rowIdx >= 0
+            point.x < array.length &&
+            point.x >= 0 &&
+            point.y < array[point.x].length &&
+            point.y >= 0
         );
     }
 

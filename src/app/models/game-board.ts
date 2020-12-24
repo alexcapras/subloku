@@ -1,5 +1,5 @@
 import { Utils } from '../utils/utils';
-import { Point } from './point';
+import { Vector } from './vector';
 
 export class GameBoard {
     // tslint:disable-next-line:variable-name
@@ -7,9 +7,18 @@ export class GameBoard {
     // tslint:disable-next-line:variable-name
     private readonly _isHovered: boolean[][];
 
+    // TODO: Make these constructor params with default vals
+    private readonly MINOR_SIZE = 3; // number of rows/columns in a "big square"
+    private readonly MAJOR_SIZE = 3; // number of "big squares" in a major row/column
+    private readonly SIZE = this.MINOR_SIZE * this.MAJOR_SIZE;
+
     constructor() {
-        this._isFilled = Utils.createGrid<boolean>(9, 9, false);
-        this._isHovered = Utils.createGrid<boolean>(9, 9, false);
+        this._isFilled = Utils.createGrid<boolean>(this.SIZE, this.SIZE, false);
+        this._isHovered = Utils.createGrid<boolean>(
+            this.SIZE,
+            this.SIZE,
+            false
+        );
     }
 
     public isFilledOrHovered(xIndex: number, yIndex: number) {
@@ -34,15 +43,15 @@ export class GameBoard {
     /**
      * Fill a list of {@param points} in the grid
      */
-    fill(points: Point[]) {
+    fill(points: Vector[]) {
         const t0 = performance.now();
 
         const isFillSuccess = this.handleShapeEvent(points, p => {
-            this._isFilled[p.colIdx][p.rowIdx] = true;
+            this._isFilled[p.x][p.y] = true;
         });
 
         if (isFillSuccess) {
-            this.onSuccessfulFill(points);
+            this.onSuccessfulFill();
         }
 
         const t1 = performance.now();
@@ -53,9 +62,9 @@ export class GameBoard {
     /**
      * Hover a list of {@param points} in the grid
      */
-    hover(points: Point[]): boolean {
+    hover(points: Vector[]): boolean {
         return this.handleShapeEvent(points, point => {
-            this._isHovered[point.colIdx][point.rowIdx] = true;
+            this._isHovered[point.x][point.y] = true;
         });
     }
 
@@ -64,8 +73,8 @@ export class GameBoard {
      * ************************/
 
     private handleShapeEvent(
-        points: Point[],
-        onSuccess: (point: Point) => void
+        points: Vector[],
+        onSuccess: (point: Vector) => void
     ): boolean {
         this.resetIsHovered();
 
@@ -83,31 +92,28 @@ export class GameBoard {
         return true;
     }
 
-    private onSuccessfulFill(points: Point[]) {
-        const point = points[0]; // TODO: check all
-        const bigSquareStartPoint: Point = point
-            .scaleDown(3.0)
-            .round()
-            .scaleUp(3);
-
-        const clearBigSquare = this.isBigSquareFilled(bigSquareStartPoint);
-        const clearVerticalLine = this.isVerticalLineFilled(point.colIdx);
-        const clearHorizontalLine = this.isHorizontalLineFilled(point.rowIdx);
+    private onSuccessfulFill() {
+        const bigSquaresToClear = Utils.createLinearGrid(
+            this.MAJOR_SIZE,
+            this.MAJOR_SIZE
+        )
+            .flatMap(arr => [...arr])
+            .map(vector => vector.scaleUp(this.MINOR_SIZE))
+            .filter(vector => this.isBigSquareFilled(vector));
+        const verticalLinesToClear = Utils.createLinearArray(
+            this.SIZE
+        ).filter(x => this.isVerticalLineFilled(x));
+        const horizontalLinesToClear = Utils.createLinearArray(
+            this.SIZE
+        ).filter(y => this.isHorizontalLineFilled(y));
 
         setTimeout(() => {
             const t0 = performance.now();
 
-            if (clearBigSquare) {
-                this.clearBigSquare(bigSquareStartPoint);
-            }
+            bigSquaresToClear.forEach(vector => this.clearBigSquare(vector));
+            verticalLinesToClear.forEach(x => this.clearVerticalLine(x));
+            horizontalLinesToClear.forEach(y => this.clearHorizontalLine(y));
 
-            if (clearVerticalLine) {
-                this.clearVerticalLine(point.colIdx);
-            }
-
-            if (clearHorizontalLine) {
-                this.clearHorizontalLine(point.rowIdx);
-            }
             const t1 = performance.now();
             console.log(
                 `Call to onSuccessTimeout() took ${t1 - t0} milliseconds.`
@@ -119,16 +125,20 @@ export class GameBoard {
         this._isHovered.forEach(row => row.fill(false));
     }
 
-    private isOutOfBoundsOrFilled = (point: Point): boolean => {
+    private isOutOfBoundsOrFilled = (point: Vector): boolean => {
         return (
             !Utils.isPointInBounds(point, this._isHovered) ||
-            this.isFilled(point.colIdx, point.rowIdx)
+            this.isFilled(point.x, point.y)
         );
     };
 
-    private clearBigSquare(startPoint: Point) {
-        for (let x = startPoint.colIdx; x < startPoint.colIdx + 3; x++) {
-            for (let y = startPoint.rowIdx; y < startPoint.rowIdx + 3; y++) {
+    private clearBigSquare(startPoint: Vector) {
+        for (let x = startPoint.x; x < startPoint.x + this.MINOR_SIZE; x++) {
+            for (
+                let y = startPoint.y;
+                y < startPoint.y + this.MINOR_SIZE;
+                y++
+            ) {
                 this._isFilled[x][y] = false;
             }
         }
@@ -171,11 +181,15 @@ export class GameBoard {
         return isVerticalLineFilled;
     }
 
-    private isBigSquareFilled(startPoint: Point) {
+    private isBigSquareFilled(startPoint: Vector) {
         let isBigSquareFilled = true;
 
-        for (let x = startPoint.colIdx; x < startPoint.colIdx + 3; x++) {
-            for (let y = startPoint.rowIdx; y < startPoint.rowIdx + 3; y++) {
+        for (let x = startPoint.x; x < startPoint.x + this.MINOR_SIZE; x++) {
+            for (
+                let y = startPoint.y;
+                y < startPoint.y + this.MINOR_SIZE;
+                y++
+            ) {
                 isBigSquareFilled = isBigSquareFilled && this._isFilled[x][y];
             }
         }

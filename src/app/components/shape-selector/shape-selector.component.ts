@@ -4,7 +4,7 @@ import { Utils } from '../../utils/utils';
 import { GameBoard } from '../../models/game-board';
 import { BehaviorSubject } from 'rxjs';
 import { CdkDragDrop, CdkDragMove, CdkDragStart } from '@angular/cdk/drag-drop';
-import { Point } from '../../models/point';
+import { Vector } from '../../models/vector';
 import { Shape } from '../../models/shape';
 import * as constants from '../../utils/constants';
 
@@ -17,15 +17,15 @@ export class ShapeSelectorComponent {
     private readonly marginPx = 20;
 
     private dragShape: Shape;
-    private dragPoint: Point;
+    private dragPoint: Vector;
 
     shapes: Shape[] = [...shapes, ...shapes.map(shape => shape.rotate90n(1))];
 
     @Input()
-    mousePosition: Point = new Point(0, 0);
+    mousePosition: Vector = new Vector(0, 0);
 
     @Input()
-    boardPosition: Point;
+    boardPosition: Vector;
 
     @Input()
     game: GameBoard;
@@ -36,13 +36,13 @@ export class ShapeSelectorComponent {
         };
     }
 
-    private get relativeMousePosition(): Point {
+    private get relativeMousePosition(): Vector {
         return this.mousePosition.subtract(this.boardPosition);
     }
 
     private get relativeMousePoint() {
         return this.relativeMousePosition
-            .subtract(new Point(constants.OFFSET, constants.OFFSET))
+            .subtract(new Vector(constants.OFFSET, constants.OFFSET))
             .scaleDown(constants.SQUARE_SIZE)
             .round()
             .subtract(this.dragPoint);
@@ -68,21 +68,21 @@ export class ShapeSelectorComponent {
         const dragElement = dragStartEvent.source.element.nativeElement;
         const { left: x, top: y } = dragElement.getBoundingClientRect();
         const shapeLimits = this.dragShape.getLimits();
-        const dragPosition = this.mousePosition.subtract(new Point(x, y));
+        const dragPosition = this.mousePosition.subtract(new Vector(x, y));
         const dragPointRaw = dragPosition
-            .subtract(new Point(constants.OFFSET, constants.OFFSET))
+            .subtract(new Vector(constants.OFFSET, constants.OFFSET))
             .scaleDown(constants.SQUARE_SIZE)
             .round();
 
         console.log('shapeLimits', shapeLimits);
-        this.dragPoint = new Point(
+        this.dragPoint = new Vector(
             Utils.withinLimits(
-                dragPointRaw.colIdx,
+                dragPointRaw.x,
                 shapeLimits.xLimits.min,
                 shapeLimits.xLimits.max
             ),
             Utils.withinLimits(
-                dragPointRaw.rowIdx,
+                dragPointRaw.y,
                 shapeLimits.yLimits.min,
                 shapeLimits.yLimits.max
             )

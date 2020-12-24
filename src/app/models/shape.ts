@@ -1,4 +1,4 @@
-import { Point } from './point';
+import { Vector } from './vector';
 
 export interface ShapeLimits {
     xLimits: Limits;
@@ -12,29 +12,29 @@ export interface Limits {
 
 export class Shape {
     // tslint:disable-next-line:variable-name
-    constructor(private _points: Point[]) {}
+    constructor(private _points: Vector[]) {}
 
     get points() {
         return this._points;
     }
 
     getLimits(): ShapeLimits {
-        const colIndices = this.points.map(({ colIdx }) => colIdx);
-        const rowIndices = this.points.map(({ rowIdx }) => rowIdx);
+        const xIndices = this.points.map(({ x }) => x);
+        const yIndices = this.points.map(({ y }) => y);
 
         return {
             xLimits: {
-                min: Math.min(...colIndices),
-                max: Math.max(...colIndices),
+                min: Math.min(...xIndices),
+                max: Math.max(...xIndices),
             },
             yLimits: {
-                min: Math.min(...rowIndices),
-                max: Math.max(...rowIndices),
+                min: Math.min(...yIndices),
+                max: Math.max(...yIndices),
             },
         };
     }
 
-    translateBy(vector: Point) {
+    translateBy(vector: Vector) {
         return new Shape(this._points.map(point => point.add(vector)));
     }
 
@@ -48,11 +48,11 @@ export class Shape {
      * rotates {@param shape} anti-clockwise 90 degrees {@param n} times
      */
     rotate90n(n: number): Shape {
-        let resultPoints: Point[] = [...this._points];
+        let resultPoints: Vector[] = [...this._points];
         let count = 0;
 
         while (count < n) {
-            resultPoints = resultPoints.map(({ x, y }) => new Point(y, -x));
+            resultPoints = resultPoints.map(({ x, y }) => new Vector(y, -x));
             count++;
         }
 
@@ -64,7 +64,7 @@ export class Shape {
      */
     normalise() {
         const shapeLimits = this.getLimits();
-        const translationVector = new Point(
+        const translationVector = new Vector(
             shapeLimits.xLimits.min,
             shapeLimits.yLimits.min
         );
