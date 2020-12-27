@@ -1,14 +1,16 @@
 <section class="shape-container">
     <div
         cdkDropList
+        class="shape-wrapper"
         *ngFor="let shape of shapeQueue.shapes; index as i"
         [ngStyle]="shapeStyle"
     >
         <app-shape
             cdkDrag
-            color="blue"
             *ngIf="!!shape"
+            [color]="'rgb(100,100,255, 0.4)'"
             [shape]="shape"
+            [cdkDragDisabled]="false"
             [cdkDragData]="{ shape: shape, index: i }"
             (cdkDragMoved)="onDragMoved($event)"
             (cdkDragDropped)="onDragDropped($event)"

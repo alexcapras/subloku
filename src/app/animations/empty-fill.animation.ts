@@ -2,12 +2,12 @@ import { animation, animate, style, keyframes } from '@angular/animations';
 
 export const emptyFillAnimation = animation([
     animate(
-        '200ms',
+        '150ms',
         keyframes([
             style({
                 background: 'rgb(0,0,255)',
                 fill: 'rgb(0,0,255)',
-                transform: 'scale(1.0)', // 'rotate(0deg) scale(1.0)',
+                transform: 'scale(1)', // 'rotate(0deg) scale(1.0)',
                 offset: 0,
                 'fill-opacity': 1,
             }),

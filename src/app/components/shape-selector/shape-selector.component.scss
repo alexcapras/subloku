@@ -1,9 +1,14 @@
 .shape-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    height: 30vh;
+}
+
+.shape-wrapper {
     display: flex;
-    flex-wrap: wrap;
-    overflow: auto;
-    height: 25vh;
-    border: solid black 1px;
+    justify-content: center;
+    justify-items: center;
 }
 
 .cdk-drag-placeholder {
