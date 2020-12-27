@@ -3,9 +3,9 @@ import * as constants from '../../utils/constants';
 
 import { trigger, transition, useAnimation } from '@angular/animations';
 import { Line, Square } from '../../models/models';
-import { GameBoard } from '../../models/game-board';
 import { Mappers } from '../../utils/mappers';
 import { emptyFillAnimation } from '../../animations/empty-fill.animation';
+import { Game } from '../../models/game';
 
 @Component({
     selector: 'app-board',
@@ -28,7 +28,7 @@ export class BoardComponent implements OnInit {
     board: ElementRef;
 
     @Input()
-    game: GameBoard;
+    game: Game;
 
     ngOnInit() {
         const xIndices = Array(9)
@@ -62,25 +62,27 @@ export class BoardComponent implements OnInit {
         const xx = (xIndex + 0.5) * constants.SQUARE_SIZE + constants.OFFSET;
         const yy = (yIndex + 0.5) * constants.SQUARE_SIZE + constants.OFFSET;
 
-        const color = this.game.isFilled(xIndex, yIndex)
+        const color = this.game.board.isFilled(xIndex, yIndex)
             ? 'rgb(0,0,255)'
-            : this.game.isHovered(xIndex, yIndex)
+            : this.game.board.isHovered(xIndex, yIndex)
             ? 'rgb(110, 110, 110)'
             : 'rgb(255, 255, 255)';
 
         return {
             'transform-origin': `${xx}px ${yy}px`, // <-- this is super important!
             fill: color,
-            'fill-opacity': this.game.isFilledOrHovered(xIndex, yIndex) ? 1 : 0,
+            'fill-opacity': this.game.board.isFilledOrHovered(xIndex, yIndex)
+                ? 1
+                : 0,
             stroke: 'black',
             'stroke-opacity': 1,
-            'stroke-width': this.game.isFilledOrHovered(xIndex, yIndex)
+            'stroke-width': this.game.board.isFilledOrHovered(xIndex, yIndex)
                 ? 1.5
                 : 0,
         };
     }
 
     getSquareState({ xIndex, yIndex }: Square) {
-        return this.game.isFilled(xIndex, yIndex) ? 'filled' : 'empty';
+        return this.game.board.isFilled(xIndex, yIndex) ? 'filled' : 'empty';
     }
 }

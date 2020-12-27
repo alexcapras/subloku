@@ -7,7 +7,8 @@ import { CdkDragDrop, CdkDragMove, CdkDragStart } from '@angular/cdk/drag-drop';
 import { Vector } from '../../models/vector';
 import { Shape } from '../../models/shape';
 import * as constants from '../../utils/constants';
-import { ShapeQueue } from '../../models/shape-queue';
+import { ShapeQueueItem } from '../../models/shape-queue';
+import { Game } from '../../models/game';
 
 @Component({
     selector: 'app-shape-selector',
@@ -28,10 +29,7 @@ export class ShapeSelectorComponent {
     boardPosition: Vector;
 
     @Input()
-    game: GameBoard;
-
-    @Input()
-    shapeQueue: ShapeQueue;
+    game: Game;
 
     get shapeStyle() {
         return {
@@ -56,18 +54,14 @@ export class ShapeSelectorComponent {
     }
 
     onDragDropped(event: CdkDragDrop<Shape>) {
-        const success = this.game.fill(this.pointsToFill);
-        if (success) {
-            this.shapeQueue.remove(this.dragShapeIndex);
-        }
-
+        this.game.fillPoints(this.pointsToFill, this.dragShapeIndex);
         this.dragPoint = null;
         this.dragShape = null;
         this.dragShapeIndex = null;
     }
 
     onDragMoved(event: CdkDragMove<{ shape: Shape; index: number }>) {
-        this.game.hover(this.pointsToFill);
+        this.game.board.hover(this.pointsToFill);
     }
 
     onDragStarted(
@@ -85,7 +79,6 @@ export class ShapeSelectorComponent {
             .scaleDown(constants.SQUARE_SIZE)
             .round();
 
-        console.log('shapeLimits', shapeLimits);
         this.dragPoint = new Vector(
             Utils.withinLimits(
                 dragPointRaw.x,
@@ -98,10 +91,9 @@ export class ShapeSelectorComponent {
                 shapeLimits.yLimits.max
             )
         );
-        console.log('mousePos:', this.mousePosition);
-        console.log('anchorPos:', { x, y });
-        console.log('dragPosition:', dragPosition);
-        console.log('dragPointRaw:', dragPointRaw);
-        console.log('dragPoint:', this.dragPoint);
+    }
+
+    getShapeColor(item: ShapeQueueItem) {
+        return item.canPlace ? 'rgb(0,0,255, 0.8)' : 'rgb(100,100,255, 0.4)';
     }
 }

@@ -2,16 +2,16 @@
     <div
         cdkDropList
         class="shape-wrapper"
-        *ngFor="let shape of shapeQueue.shapes; index as i"
+        *ngFor="let shapeQueueItem of game.shapeQueue.items; index as i"
         [ngStyle]="shapeStyle"
     >
         <app-shape
             cdkDrag
-            *ngIf="!!shape"
-            [color]="'rgb(100,100,255, 0.4)'"
-            [shape]="shape"
-            [cdkDragDisabled]="false"
-            [cdkDragData]="{ shape: shape, index: i }"
+            *ngIf="!!shapeQueueItem && shapeQueueItem.shape"
+            [color]="getShapeColor(shapeQueueItem)"
+            [shape]="shapeQueueItem.shape"
+            [cdkDragDisabled]="!shapeQueueItem.canPlace"
+            [cdkDragData]="{ shape: shapeQueueItem.shape, index: i }"
             (cdkDragMoved)="onDragMoved($event)"
             (cdkDragDropped)="onDragDropped($event)"
             (cdkDragStarted)="onDragStarted($event)"

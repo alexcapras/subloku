@@ -7,8 +7,7 @@ import {
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Vector } from '../../models/vector';
-import { GameBoard } from '../../models/game-board';
-import { ShapeQueue } from '../../models/shape-queue';
+import { Game } from '../../models/game';
 
 @Component({
     selector: 'app-game',
@@ -23,8 +22,7 @@ export class GameComponent implements OnInit {
         Vector
     > = new BehaviorSubject(new Vector(0, 0));
 
-    game: GameBoard;
-    shapeQueue: ShapeQueue;
+    game: Game;
 
     @HostListener('document:mousemove', ['$event'])
     onMousemove(event: MouseEvent) {
@@ -34,8 +32,7 @@ export class GameComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.game = new GameBoard();
-        this.shapeQueue = new ShapeQueue();
+        this.game = new Game();
     }
 
     get mousePosition(): Vector {
@@ -48,5 +45,9 @@ export class GameComponent implements OnInit {
             : { left: 0, top: 0 };
 
         return new Vector(x, y);
+    }
+
+    onRestart() {
+        this.game = new Game();
     }
 }

@@ -10,6 +10,7 @@ import { ShapeSelectorComponent } from './components/shape-selector/shape-select
 import { ShapeComponent } from './components/shape/shape.component';
 import { GridComponent } from './components/grid/grid.component';
 import { MainGridComponent } from './components/main-grid/main-grid.component';
+import { SvgGridComponent } from './components/svg-grid/svg-grid.component';
 
 @NgModule({
     declarations: [
@@ -20,6 +21,7 @@ import { MainGridComponent } from './components/main-grid/main-grid.component';
         ShapeComponent,
         GridComponent,
         MainGridComponent,
+        SvgGridComponent,
     ],
     imports: [BrowserModule, BrowserAnimationsModule, DragDropModule],
     providers: [],

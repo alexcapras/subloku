@@ -1,0 +1,19 @@
+<svg
+    class="wrapper"
+    *ngIf="!!squares"
+    [ngStyle]="getWrapperStyle()"
+    [attr.width]="totalWidth"
+    [attr.height]="totalHeight"
+>
+    <rect
+        *ngFor="let square of squares"
+        [ngStyle]="getSquareStyle(square.x, square.y)"
+        [attr.x]="square.x"
+        [attr.y]="square.y"
+        [attr.width]="square.width"
+        [attr.height]="square.height"
+    ></rect>
+</svg>
+
+<!--[ngStyle]="getSquareStyle(square)"-->
+<!--[@emptyFill]="getSquareState(square)"-->

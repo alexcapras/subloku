@@ -1,5 +1,10 @@
 import { Shape } from './shape';
-import { shapes } from '../utils/shapes';
+import { selectRandomShape } from '../utils/shapes';
+
+export interface ShapeQueueItem {
+    shape: Shape;
+    canPlace: boolean;
+}
 
 export class ShapeQueue {
     private SIZE = 3;
@@ -7,23 +12,17 @@ export class ShapeQueue {
         this.reset();
     }
 
-    private queue: Shape[] = new Array(this.SIZE);
+    private queue: ShapeQueueItem[] = new Array(this.SIZE);
 
-    private static selectRandomShape(): Shape {
-        return shapes[Math.floor(Math.random() * shapes.length)].rotate90n(
-            Math.floor(Math.random() * 4)
-        );
-    }
-
-    get shapes(): Shape[] {
+    get items(): ShapeQueueItem[] {
         return this.queue;
     }
 
     reset() {
         this.queue = [
-            ShapeQueue.selectRandomShape(),
-            ShapeQueue.selectRandomShape(),
-            ShapeQueue.selectRandomShape(),
+            { canPlace: true, shape: selectRandomShape() },
+            { canPlace: true, shape: selectRandomShape() },
+            { canPlace: true, shape: selectRandomShape() },
         ];
     }
 
@@ -36,11 +35,5 @@ export class ShapeQueue {
             console.log('ERROR: shape already removed');
         }
         this.queue[idx] = null;
-
-        const hasMoreShapes = this.queue.find(shape => !!shape);
-
-        if (!hasMoreShapes) {
-            this.reset();
-        }
     }
 }

@@ -1,5 +1,6 @@
 import { Utils } from '../utils/utils';
 import { Vector } from './vector';
+import { Shape } from './shape';
 
 export class GameBoard {
     // tslint:disable-next-line:variable-name
@@ -21,6 +22,13 @@ export class GameBoard {
         );
     }
 
+    get filled() {
+        return this._isFilled;
+    }
+    get hovered() {
+        return this._isHovered;
+    }
+
     public isFilledOrHovered(xIndex: number, yIndex: number) {
         return this.isFilled(xIndex, yIndex) || this.isHovered(xIndex, yIndex);
     }
@@ -33,30 +41,13 @@ export class GameBoard {
         return this._isHovered[xIndex][yIndex];
     }
 
-    get filled() {
-        return this._isFilled;
-    }
-    get hovered() {
-        return this._isHovered;
-    }
-
     /**
      * Fill a list of {@param points} in the grid
      */
     fill(points: Vector[]): boolean {
-        const t0 = performance.now();
-
-        const isFillSuccess = this.handleShapeEvent(points, p => {
+        return this.handleShapeEvent(points, p => {
             this._isFilled[p.x][p.y] = true;
         });
-
-        if (isFillSuccess) {
-            this.onSuccessfulFill();
-        }
-
-        const t1 = performance.now();
-        console.log(`Call to fill() took ${t1 - t0} milliseconds.`);
-        return isFillSuccess;
     }
 
     /**
@@ -66,6 +57,59 @@ export class GameBoard {
         return this.handleShapeEvent(points, point => {
             this._isHovered[point.x][point.y] = true;
         });
+    }
+
+    clearFilledAreas() {
+        const bigSquaresToClear = Utils.createLinearGrid(
+            this.MAJOR_SIZE,
+            this.MAJOR_SIZE
+        )
+            .flatMap(arr => [...arr])
+            .map(vector => vector.scaleUp(this.MINOR_SIZE))
+            .filter(vector => this.isBigSquareFilled(vector));
+        const verticalLinesToClear = Utils.createLinearArray(
+            this.SIZE
+        ).filter(x => this.isVerticalLineFilled(x));
+        const horizontalLinesToClear = Utils.createLinearArray(
+            this.SIZE
+        ).filter(y => this.isHorizontalLineFilled(y));
+
+        bigSquaresToClear.forEach(vector => this.clearBigSquare(vector));
+        verticalLinesToClear.forEach(x => this.clearVerticalLine(x));
+        horizontalLinesToClear.forEach(y => this.clearHorizontalLine(y));
+
+        const totalsCleared =
+            bigSquaresToClear.length +
+            verticalLinesToClear.length +
+            horizontalLinesToClear.length;
+
+        return 2 * 9 * totalsCleared;
+    }
+
+    canPlace(shape: Shape): boolean {
+        const shapeLimits = shape.getLimits();
+
+        for (
+            let x = 0;
+            x < this._isFilled.length - shapeLimits.xLimits.max;
+            x++
+        ) {
+            for (
+                let y = 0;
+                y < this._isFilled[x].length - shapeLimits.yLimits.max;
+                y++
+            ) {
+                const hasFilledShape = shape.points
+                    .map(point => point.add(new Vector(x, y)))
+                    .find(point => this.isOutOfBoundsOrFilled(point));
+
+                if (!hasFilledShape) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /* ************************
@@ -83,42 +127,12 @@ export class GameBoard {
         );
 
         if (isAnyPointOutOfBoundsOrFilled) {
-            // console.log('a point is out of bounds, or has already been filled');
             return false;
         }
 
         points.forEach(onSuccess);
 
         return true;
-    }
-
-    private onSuccessfulFill() {
-        const bigSquaresToClear = Utils.createLinearGrid(
-            this.MAJOR_SIZE,
-            this.MAJOR_SIZE
-        )
-            .flatMap(arr => [...arr])
-            .map(vector => vector.scaleUp(this.MINOR_SIZE))
-            .filter(vector => this.isBigSquareFilled(vector));
-        const verticalLinesToClear = Utils.createLinearArray(
-            this.SIZE
-        ).filter(x => this.isVerticalLineFilled(x));
-        const horizontalLinesToClear = Utils.createLinearArray(
-            this.SIZE
-        ).filter(y => this.isHorizontalLineFilled(y));
-
-        setTimeout(() => {
-            const t0 = performance.now();
-
-            bigSquaresToClear.forEach(vector => this.clearBigSquare(vector));
-            verticalLinesToClear.forEach(x => this.clearVerticalLine(x));
-            horizontalLinesToClear.forEach(y => this.clearHorizontalLine(y));
-
-            const t1 = performance.now();
-            console.log(
-                `Call to onSuccessTimeout() took ${t1 - t0} milliseconds.`
-            );
-        }, 0);
     }
 
     private resetIsHovered() {

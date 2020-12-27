@@ -64,3 +64,9 @@ export const shapes: Shape[] = [
         new Vector(1, 2),
     ]),
 ];
+
+export const selectRandomShape = (): Shape => {
+    return shapes[Math.floor(Math.random() * shapes.length)].rotate90n(
+        Math.floor(Math.random() * 4)
+    );
+};
