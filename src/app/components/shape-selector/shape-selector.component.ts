@@ -1,8 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { shapes } from 'src/app/utils/shapes';
 import { Utils } from '../../utils/utils';
-import { GameBoard } from '../../models/game-board';
-import { BehaviorSubject } from 'rxjs';
 import { CdkDragDrop, CdkDragMove, CdkDragStart } from '@angular/cdk/drag-drop';
 import { Vector } from '../../models/vector';
 import { Shape } from '../../models/shape';

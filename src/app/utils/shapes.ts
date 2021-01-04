@@ -3,7 +3,7 @@ import { Vector } from '../models/vector';
 
 export const shapes: Shape[] = [
     // Single point
-    new Shape([new Vector(0, 0)]),
+    // new Shape([new Vector(0, 0)]),
     // Small (2-cell) line
     new Shape([new Vector(0, 0), new Vector(0, 1)]),
     // Medium (3-cell) line
