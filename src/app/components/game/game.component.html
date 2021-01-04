@@ -1,8 +1,9 @@
-<ng-container *ngIf="game.isGameOver">
-    <ng-container>Game Over</ng-container>
-    <button (click)="onRestart()">Restart</button>
-</ng-container>
-<ng-container>Score: {{ game.score }}</ng-container>
+<div class="header">
+    <div class="header__score">Score: {{ game.score }}</div>
+    <div class="header__game-over" *ngIf="game.isGameOver">Game Over</div>
+    <button *ngIf="game.isGameOver" (click)="onRestart()">Restart</button>
+</div>
+
 <section class="board-wrapper">
     <div #board>
         <app-board [game]="game"></app-board>
@@ -10,6 +11,7 @@
 </section>
 
 <app-shape-selector
+    class="shape-selector"
     [game]="game"
     [boardPosition]="boardPosition"
     [mousePosition]="mousePosition"
