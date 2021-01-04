@@ -8,12 +8,19 @@ import { Utils } from '../../utils/utils';
     styleUrls: ['./shape.component.scss'],
 })
 export class ShapeComponent {
+    // tslint:disable-next-line:variable-name
+    private _shape: Shape;
+
+    get shape(): Shape {
+        return this._shape;
+    }
     @Input()
     color = 'green';
 
     @Input()
     set shape(shape: Shape) {
         // TODO: don't assume 0 minimum
+        this._shape = shape;
         const limits = shape.getLimits();
         this.rows = limits.yLimits.max + 1;
         this.cols = limits.xLimits.max + 1;

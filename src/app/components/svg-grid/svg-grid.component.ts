@@ -9,7 +9,6 @@ import * as constants from '../../utils/constants';
 })
 export class SvgGridComponent implements OnInit {
     size = constants.SQUARE_SIZE;
-    marginPx = 4;
     totalWidth: number;
     totalHeight: number;
 
@@ -18,6 +17,9 @@ export class SvgGridComponent implements OnInit {
 
     @Input()
     color = 'blue';
+
+    @Input()
+    marginPx = 2;
 
     @Input()
     set shape(shape: Shape) {
@@ -50,16 +52,12 @@ export class SvgGridComponent implements OnInit {
         };
     }
 
-    getSquareStyle(xIndex, yIndex) {
-        const xx = (xIndex + 0.5) * constants.SQUARE_SIZE + constants.OFFSET;
-        const yy = (yIndex + 0.5) * constants.SQUARE_SIZE + constants.OFFSET;
-
+    get squareStyle() {
         return {
-            // 'transform-origin': `${xx}px ${yy}px`, // <-- this is super important!
             fill: this.color,
             stroke: 'black',
             'stroke-opacity': 1,
-            'stroke-width': 2.5,
+            'stroke-width': 1.5,
         };
     }
 }

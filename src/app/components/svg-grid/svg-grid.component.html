@@ -7,7 +7,7 @@
 >
     <rect
         *ngFor="let square of squares"
-        [ngStyle]="getSquareStyle(square.x, square.y)"
+        [ngStyle]="squareStyle"
         [attr.x]="square.x"
         [attr.y]="square.y"
         [attr.width]="square.width"
