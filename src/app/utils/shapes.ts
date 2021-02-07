@@ -3,7 +3,7 @@ import { Vector } from '../models/vector';
 
 export const shapes: Shape[] = [
     // Single point
-    // new Shape([new Vector(0, 0)]),
+    new Shape([new Vector(0, 0)]),
     // Small (2-cell) line
     new Shape([new Vector(0, 0), new Vector(0, 1)]),
     // Medium (3-cell) line
@@ -55,6 +55,13 @@ export const shapes: Shape[] = [
         new Vector(1, 2),
         new Vector(2, 1),
     ]),
+    // Little T
+    new Shape([
+        new Vector(0, 0),
+        new Vector(1, 0),
+        new Vector(2, 0),
+        new Vector(1, 1),
+    ]),
     // Big T
     new Shape([
         new Vector(0, 0),
@@ -63,6 +70,24 @@ export const shapes: Shape[] = [
         new Vector(1, 1),
         new Vector(1, 2),
     ]),
+    // Snake Left
+    new Shape([
+        new Vector(0, 0),
+        new Vector(1, 0),
+        new Vector(1, 1),
+        new Vector(2, 1),
+    ]),
+    // Snake Right
+    new Shape([
+      new Vector(0, 1),
+      new Vector(1, 1),
+      new Vector(1, 0),
+      new Vector(2, 0),
+    ]),
+    // Small diagonal
+    new Shape([new Vector(0, 0), new Vector(1, 1)]),
+    // Big diagonal
+    new Shape([new Vector(0, 0), new Vector(1, 1), new Vector(2, 2)]),
 ];
 
 export const selectRandomShape = (): Shape => {
